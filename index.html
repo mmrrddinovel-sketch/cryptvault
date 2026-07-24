@@ -1,711 +1,583 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CryptVault Global</title>
-  <style>
-    /* ============================================================
-       ГЛОБАЛЬНЫЙ СТИЛЬ — МИРОВОЙ ПРЕМИУМ
-       ============================================================ */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CryptVault Elite Pro</title>
+    <style>
+        /* === ГЛОБАЛЬНЫЙ СБРОС === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
 
-    body {
-      background: #070a0f;
-      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-      color: #eef2f8;
-      min-height: 100vh;
-      padding: 0 0 40px 0;
-      display: flex;
-      flex-direction: column;
-    }
+        body {
+            background: #060a12;
+            color: #e8edf5;
+            min-height: 100vh;
+            padding: 0 0 30px 0;
+        }
 
-    /* ============================================================
-       ВЕРХНЯЯ ПЛАНКА — ГЛОБАЛЬНЫЙ СТАТУС
-       ============================================================ */
-    .global-top {
-      background: rgba(10, 14, 23, 0.92);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255, 215, 0, 0.08);
-      padding: 14px 22px 12px 22px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-    }
+        /* === ВЕРХНЯЯ ПЛАНКА === */
+        .header {
+            background: rgba(8, 12, 20, 0.96);
+            backdrop-filter: blur(20px);
+            padding: 16px 20px 12px 20px;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    .global-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    .global-logo .icon {
-      width: 32px;
-      height: 32px;
-      background: linear-gradient(135deg, #f7c948, #d4a020);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      font-weight: 800;
-      color: #0a0d12;
-      box-shadow: 0 4px 20px rgba(240, 185, 11, 0.2);
-    }
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, #f7c948, #d4a020);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 800;
+            color: #0a0d12;
+            box-shadow: 0 4px 24px rgba(240, 185, 11, 0.25);
+        }
 
-    .global-logo .brand {
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      background: linear-gradient(to right, #f7e8c0, #f0b90b);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(to right, #f7e8c0, #f0b90b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 0.5px;
+        }
 
-    .global-logo .brand-sub {
-      font-size: 9px;
-      letter-spacing: 2px;
-      color: #7f8a9e;
-      text-transform: uppercase;
-      -webkit-text-fill-color: #7f8a9e;
-      margin-left: 2px;
-    }
+        .logo-sub {
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: #5a6a7e;
+            text-transform: uppercase;
+            -webkit-text-fill-color: #5a6a7e;
+            margin-left: 2px;
+        }
 
-    .global-status {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
+        .online-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(74, 222, 128, 0.08);
+            border: 1px solid rgba(74, 222, 128, 0.12);
+            padding: 4px 12px 4px 8px;
+            border-radius: 40px;
+            font-size: 10px;
+            color: #4ade80;
+        }
 
-    .status-badge {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(74, 222, 128, 0.08);
-      border: 1px solid rgba(74, 222, 128, 0.15);
-      padding: 4px 12px 4px 8px;
-      border-radius: 40px;
-      font-size: 10px;
-      font-weight: 500;
-      color: #4ade80;
-      letter-spacing: 0.3px;
-    }
+        .online-dot {
+            width: 6px;
+            height: 6px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
 
-    .status-badge .dot {
-      width: 6px;
-      height: 6px;
-      background: #4ade80;
-      border-radius: 50%;
-      animation: pulse-dot 2s infinite;
-    }
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.2;
+                transform: scale(0.7);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
 
-    @keyframes pulse-dot {
-      0% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.3; transform: scale(0.8); }
-      100% { opacity: 1; transform: scale(1); }
-    }
+        /* === ПРИВЕТСТВИЕ === */
+        .greeting {
+            padding: 20px 22px 8px 22px;
+        }
 
-    .status-badge .label {
-      color: #7f8a9e;
-      font-weight: 400;
-    }
+        .greeting h1 {
+            font-size: 26px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
 
-    /* ============================================================
-       ПРИВЕТСТВИЕ + СТАТИСТИКА
-       ============================================================ */
-    .hero-section {
-      padding: 18px 22px 6px 22px;
-    }
+        .greeting h1 span {
+            color: #f0b90b;
+        }
 
-    .hero-section h1 {
-      font-size: 28px;
-      font-weight: 600;
-      letter-spacing: -0.5px;
-    }
+        .greeting p {
+            color: #5a6a7e;
+            font-size: 14px;
+            margin-top: 2px;
+        }
 
-    .hero-section h1 span {
-      color: #f0b90b;
-    }
+        /* === БАЛАНС КАРТА === */
+        .balance-card {
+            background: linear-gradient(145deg, #0e1628, #080c18);
+            margin: 14px 20px 0 20px;
+            border-radius: 28px;
+            padding: 26px 22px 20px 22px;
+            border: 1px solid rgba(255, 215, 0, 0.05);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
+            position: relative;
+            overflow: hidden;
+        }
 
-    .hero-section .sub {
-      color: #6a7a8e;
-      font-size: 14px;
-      margin-top: 2px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+        .balance-card::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -10%;
+            width: 220px;
+            height: 220px;
+            background: radial-gradient(circle, rgba(240, 185, 11, 0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
 
-    .hero-section .sub .divider {
-      width: 4px;
-      height: 4px;
-      background: #3a4a5e;
-      border-radius: 50%;
-    }
+        .balance-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
 
-    /* ============================================================
-       КАРТОЧКА БАЛАНСА — МИРОВОЙ УРОВЕНЬ
-       ============================================================ */
-    .balance-card-global {
-      background: linear-gradient(145deg, #111a2a, #0a101c);
-      margin: 14px 22px 0 22px;
-      border-radius: 32px;
-      padding: 30px 26px 26px 26px;
-      border: 1px solid rgba(255, 215, 0, 0.06);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 215, 0, 0.02);
-      position: relative;
-      overflow: hidden;
-    }
+        .balance-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #5a6a7e;
+        }
 
-    .balance-card-global::before {
-      content: '';
-      position: absolute;
-      top: -40%;
-      right: -10%;
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle, rgba(240, 185, 11, 0.04) 0%, transparent 70%);
-      border-radius: 50%;
-      pointer-events: none;
-    }
+        .balance-number {
+            font-size: 40px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #fff;
+            margin-top: 2px;
+        }
 
-    .balance-card-global .top-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-    }
+        .balance-number small {
+            font-size: 18px;
+            font-weight: 400;
+            color: #5a6a7e;
+            margin-left: 4px;
+        }
 
-    .balance-card-global .label-group {
-      display: flex;
-      flex-direction: column;
-    }
+        .change-badge {
+            background: rgba(74, 222, 128, 0.06);
+            border: 1px solid rgba(74, 222, 128, 0.1);
+            padding: 3px 14px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #4ade80;
+            white-space: nowrap;
+        }
 
-    .balance-card-global .label-group .main-label {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: #6a7a8e;
-      font-weight: 500;
-    }
+        .balance-stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+        }
 
-    .balance-card-global .label-group .usd-value {
-      font-size: 42px;
-      font-weight: 700;
-      letter-spacing: -1px;
-      color: #ffffff;
-      margin-top: 4px;
-    }
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
 
-    .balance-card-global .label-group .usd-value small {
-      font-size: 18px;
-      font-weight: 400;
-      color: #6a7a8e;
-      margin-left: 4px;
-    }
+        .stat-item .s-label {
+            font-size: 9px;
+            text-transform: uppercase;
+            color: #3a4a5e;
+            letter-spacing: 0.4px;
+        }
 
-    .balance-card-global .change-badge {
-      background: rgba(74, 222, 128, 0.06);
-      border: 1px solid rgba(74, 222, 128, 0.12);
-      padding: 4px 14px;
-      border-radius: 40px;
-      font-size: 13px;
-      font-weight: 500;
-      color: #4ade80;
-      white-space: nowrap;
-    }
+        .stat-item .s-value {
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 2px;
+        }
 
-    .balance-card-global .change-badge .arrow {
-      margin-right: 4px;
-    }
+        .stat-item .s-value.gold {
+            color: #f0b90b;
+        }
 
-    .balance-card-global .bottom-row {
-      display: flex;
-      gap: 24px;
-      margin-top: 18px;
-      padding-top: 16px;
-      border-top: 1px solid rgba(255, 255, 255, 0.03);
-    }
+        /* === ДЕПОЗИТЫ === */
+        .deposit-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 18px 20px 0 20px;
+        }
 
-    .balance-card-global .bottom-row .stat-item {
-      display: flex;
-      flex-direction: column;
-    }
+        .deposit-box {
+            background: #0c1422;
+            border-radius: 18px;
+            padding: 14px 16px 12px 16px;
+            border: 1px solid #162032;
+        }
 
-    .balance-card-global .bottom-row .stat-item .stat-label {
-      font-size: 10px;
-      text-transform: uppercase;
-      color: #4a5a6e;
-      letter-spacing: 0.5px;
-    }
+        .deposit-box .d-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #3a4a5e;
+            letter-spacing: 0.5px;
+        }
 
-    .balance-card-global .bottom-row .stat-item .stat-value {
-      font-size: 16px;
-      font-weight: 600;
-      color: #eef2f8;
-      margin-top: 2px;
-    }
+        .deposit-box .d-value {
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 2px;
+        }
 
-    .balance-card-global .bottom-row .stat-item .stat-value.gold {
-      color: #f0b90b;
-    }
+        .deposit-box .d-value.gold {
+            color: #f0b90b;
+        }
 
-    /* ============================================================
-       СЕТКА ДЕПОЗИТОВ (ПРОФЕССИОНАЛЬНАЯ)
-       ============================================================ */
-    .deposit-grid-global {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin: 18px 22px 0 22px;
-    }
+        .deposit-box .d-hint {
+            font-size: 9px;
+            color: #2a3a4e;
+            margin-top: 2px;
+        }
 
-    .deposit-item-global {
-      background: #0e1624;
-      border-radius: 20px;
-      padding: 16px 16px 14px 16px;
-      border: 1px solid #1a2438;
-      transition: all 0.2s;
-    }
+        /* === КНОПКИ === */
+        .btn-primary {
+            background: linear-gradient(135deg, #f7c948, #d4a020);
+            border: none;
+            border-radius: 60px;
+            padding: 18px 20px;
+            font-size: 17px;
+            font-weight: 700;
+            color: #0a0d12;
+            width: calc(100% - 40px);
+            margin: 22px 20px 0 20px;
+            box-shadow: 0 8px 32px rgba(240, 185, 11, 0.15);
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.3px;
+        }
 
-    .deposit-item-global .d-label {
-      font-size: 10px;
-      text-transform: uppercase;
-      color: #4a5a6e;
-      letter-spacing: 0.6px;
-    }
+        .btn-primary:active {
+            transform: scale(0.96);
+        }
 
-    .deposit-item-global .d-value {
-      font-size: 20px;
-      font-weight: 700;
-      margin-top: 4px;
-      color: #ffffff;
-    }
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            width: calc(100% - 40px);
+            margin: 12px 20px 0 20px;
+        }
 
-    .deposit-item-global .d-value.gold {
-      color: #f0b90b;
-    }
+        .btn-row .btn-half {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid #1a2438;
+            border-radius: 60px;
+            padding: 14px 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #b8c4d4;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
 
-    .deposit-item-global .d-sub {
-      font-size: 10px;
-      color: #3a4a5e;
-      margin-top: 2px;
-    }
+        .btn-row .btn-half:active {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: #2a3a52;
+        }
 
-    /* ============================================================
-       КНОПКИ — СТИЛЬ TOP-TIER
-       ============================================================ */
-    .btn-primary-global {
-      background: linear-gradient(135deg, #f7c948, #d4a020);
-      border: none;
-      border-radius: 60px;
-      padding: 18px 20px;
-      font-size: 17px;
-      font-weight: 700;
-      color: #0a0d12;
-      width: calc(100% - 44px);
-      margin: 24px 22px 0 22px;
-      box-shadow: 0 8px 30px rgba(240, 185, 11, 0.12);
-      transition: all 0.25s;
-      cursor: pointer;
-      letter-spacing: 0.3px;
-      position: relative;
-      overflow: hidden;
-    }
+        /* === ЛЕНТА ТРАНЗАКЦИЙ === */
+        .tx-feed {
+            margin: 20px 20px 0 20px;
+            background: #0a101e;
+            border-radius: 22px;
+            padding: 16px 18px 14px 18px;
+            border: 1px solid #121c2e;
+        }
 
-    .btn-primary-global::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
+        .tx-feed .tx-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #3a4a5e;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
 
-    .btn-primary-global:active::after {
-      opacity: 1;
-    }
+        .tx-feed .tx-header .live {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #4ade80;
+        }
 
-    .btn-primary-global:active {
-      transform: scale(0.97);
-      box-shadow: 0 4px 15px rgba(240, 185, 11, 0.08);
-    }
+        .tx-feed .tx-header .live .dot {
+            width: 5px;
+            height: 5px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse 1.2s infinite;
+        }
 
-    .btn-secondary-global {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid #1e2a40;
-      border-radius: 60px;
-      padding: 16px 20px;
-      font-size: 15px;
-      font-weight: 500;
-      color: #c8d0dc;
-      width: calc(100% - 44px);
-      margin: 12px 22px 0 22px;
-      transition: all 0.2s;
-      cursor: pointer;
-    }
+        .tx-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #0e1828;
+            font-size: 13px;
+            color: #b8c4d4;
+        }
 
-    .btn-secondary-global:active {
-      background: rgba(255, 255, 255, 0.04);
-      border-color: #2a3a52;
-    }
+        .tx-item:last-child {
+            border-bottom: none;
+        }
 
-    .btn-row {
-      display: flex;
-      gap: 10px;
-      width: calc(100% - 44px);
-      margin: 12px 22px 0 22px;
-    }
+        .tx-item .tx-amount {
+            color: #4ade80;
+            font-weight: 600;
+        }
 
-    .btn-row .btn-half {
-      flex: 1;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid #1e2a40;
-      border-radius: 60px;
-      padding: 14px 10px;
-      font-size: 13px;
-      font-weight: 500;
-      color: #c8d0dc;
-      text-align: center;
-      transition: all 0.2s;
-      cursor: pointer;
-    }
+        .tx-item .tx-time {
+            font-size: 10px;
+            color: #2a3a4e;
+        }
 
-    .btn-row .btn-half:active {
-      background: rgba(255, 255, 255, 0.04);
-      border-color: #2a3a52;
-    }
+        /* === ФУТЕР === */
+        .footer {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 26px;
+            font-size: 10px;
+            color: #1a2a3e;
+            letter-spacing: 0.3px;
+        }
 
-    /* ============================================================
-       ЛЕНТА ТРАНЗАКЦИЙ — КАК НА БИРЖЕ
-       ============================================================ */
-    .tx-feed-global {
-      margin: 22px 22px 0 22px;
-      background: #0a101c;
-      border-radius: 24px;
-      padding: 18px 20px 14px 20px;
-      border: 1px solid #141e30;
-    }
+        .footer span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
 
-    .tx-feed-global .tx-header {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      color: #4a5a6e;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 12px;
-    }
-
-    .tx-feed-global .tx-header .tx-right {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .tx-feed-global .tx-header .tx-right .live-dot {
-      width: 5px;
-      height: 5px;
-      background: #4ade80;
-      border-radius: 50%;
-      animation: pulse-dot 1.5s infinite;
-    }
-
-    .tx-feed-global .tx-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 8px 0;
-      border-bottom: 1px solid #111b2b;
-      font-size: 13px;
-      color: #b8c4d4;
-    }
-
-    .tx-feed-global .tx-item:last-child {
-      border-bottom: none;
-    }
-
-    .tx-feed-global .tx-item .tx-amount {
-      color: #4ade80;
-      font-weight: 600;
-    }
-
-    .tx-feed-global .tx-item .tx-time {
-      font-size: 11px;
-      color: #3a4a5e;
-    }
-
-    /* ============================================================
-       СТАТУСНАЯ СТРОКА — ПРОФЕССИОНАЛЬНАЯ
-       ============================================================ */
-    .global-footer {
-      display: flex;
-      justify-content: center;
-      gap: 28px;
-      margin-top: 28px;
-      font-size: 11px;
-      color: #2a3a4e;
-      letter-spacing: 0.3px;
-    }
-
-    .global-footer span {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .global-footer .dot-green {
-      width: 5px;
-      height: 5px;
-      background: #4ade80;
-      border-radius: 50%;
-      animation: pulse-dot 2s infinite;
-    }
-
-    .global-footer .lock-icon {
-      font-size: 10px;
-    }
-
-    /* ============================================================
-       АНИМАЦИИ
-       ============================================================ */
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .balance-card-global {
-      animation: fadeInUp 0.6s ease-out;
-    }
-
-    /* ============================================================
-       АДАПТАЦИЯ
-       ============================================================ */
-    @media (max-width: 400px) {
-      .balance-card-global .label-group .usd-value {
-        font-size: 32px;
-      }
-      .hero-section h1 {
-        font-size: 22px;
-      }
-      .global-logo .brand {
-        font-size: 17px;
-      }
-      .btn-row {
-        flex-direction: column;
-        gap: 10px;
-      }
-      .btn-row .btn-half {
-        padding: 16px 10px;
-      }
-    }
-  </style>
+        .footer .dot-green {
+            width: 5px;
+            height: 5px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+    </style>
 </head>
 <body>
 
-  <!-- ============================================================
-       ВЕРХНЯЯ ПЛАНКА — ГЛОБАЛЬНЫЙ СТАТУС
-       ============================================================ -->
-  <div class="global-top">
-    <div class="global-logo">
-      <div class="icon">◈</div>
-      <div>
-        <div class="brand">CRYPTVAULT <span class="brand-sub">GLOBAL</span></div>
-      </div>
+    <!-- ===== HEADER ===== -->
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon">◈</div>
+            <div>
+                <span class="logo-text">CRYPTVAULT</span>
+                <span class="logo-sub">ELITE</span>
+            </div>
+        </div>
+        <div class="online-badge">
+            <span class="online-dot"></span>
+            Online 24/7
+        </div>
     </div>
-    <div class="global-status">
-      <div class="status-badge">
-        <span class="dot"></span>
-        <span>Online</span>
-        <span class="label">· 24/7</span>
-      </div>
+
+    <!-- ===== GREETING ===== -->
+    <div class="greeting">
+        <h1>Добро пожаловать, <span>оператор</span></h1>
+        <p>🌍 Глобальный процессинг · 🔒 Анонимно</p>
     </div>
-  </div>
 
-  <!-- ============================================================
-       ПРИВЕТСТВИЕ
-       ============================================================ -->
-  <div class="hero-section">
-    <h1>Добро пожаловать, <span>оператор</span></h1>
-    <div class="sub">
-      <span>🌍 Global Processing Network</span>
-      <span class="divider"></span>
-      <span>🔒 Elite Access</span>
+    <!-- ===== BALANCE CARD ===== -->
+    <div class="balance-card">
+        <div class="balance-row">
+            <div>
+                <div class="balance-label">Доход за сегодня</div>
+                <div class="balance-number" id="todayEarn">0 <small>USDT</small></div>
+            </div>
+            <div class="change-badge" id="changeBadge">▲ +0.0%</div>
+        </div>
+        <div class="balance-stats">
+            <div class="stat-item">
+                <span class="s-label">Рабочий депозит</span>
+                <span class="s-value" id="workDep">0 USDT</span>
+            </div>
+            <div class="stat-item">
+                <span class="s-label">Страховой депозит</span>
+                <span class="s-value gold" id="insDep">0 USDT</span>
+            </div>
+            <div class="stat-item">
+                <span class="s-label">Статус</span>
+                <span class="s-value" style="color:#4ade80; font-size:14px;">● Active</span>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- ============================================================
-       КАРТОЧКА БАЛАНСА — МИРОВОЙ УРОВЕНЬ
-       ============================================================ -->
-  <div class="balance-card-global">
-    <div class="top-row">
-      <div class="label-group">
-        <span class="main-label">Доход за сегодня</span>
-        <span class="usd-value" id="todayEarn">0 <small>USDT</small></span>
-      </div>
-      <div class="change-badge" id="changeBadge">▲ +0.0%</div>
+    <!-- ===== DEPOSITS ===== -->
+    <div class="deposit-grid">
+        <div class="deposit-box">
+            <div class="d-label">💰 БОНУС</div>
+            <div class="d-value gold" id="bonusValue">+0 USDT</div>
+            <div class="d-hint">за сегодня</div>
+        </div>
+        <div class="deposit-box">
+            <div class="d-label">📊 СТАВКА</div>
+            <div class="d-value" style="color:#4ade80;" id="rateValue">0.0%</div>
+            <div class="d-hint">комиссия</div>
+        </div>
     </div>
-    <div class="bottom-row">
-      <div class="stat-item">
-        <span class="stat-label">Рабочий депозит</span>
-        <span class="stat-value" id="workDep">0 USDT</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-label">Страховой депозит</span>
-        <span class="stat-value gold" id="insDep">0 USDT</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-label">Статус</span>
-        <span class="stat-value" style="color:#4ade80; font-size:13px;">● Active</span>
-      </div>
+
+    <!-- ===== BUTTONS ===== -->
+    <button class="btn-primary" id="depositBtn">📥 Пополнить депозит</button>
+    <div class="btn-row">
+        <div class="btn-half" id="withdrawBtn">💳 Вывод</div>
+        <div class="btn-half" id="historyBtn">📋 История</div>
     </div>
-  </div>
 
-  <!-- ============================================================
-       КНОПКИ
-       ============================================================ -->
-  <button class="btn-primary-global" id="depositBtn">📥 Пополнить депозит</button>
-
-  <div class="btn-row">
-    <div class="btn-half" id="withdrawBtn">💳 Вывод</div>
-    <div class="btn-half" id="historyBtn">📋 История</div>
-  </div>
-
-  <!-- ============================================================
-       ЛЕНТА ТРАНЗАКЦИЙ
-       ============================================================ -->
-  <div class="tx-feed-global">
-    <div class="tx-header">
-      <span>📋 Последние транзакции</span>
-      <span class="tx-right">
-        <span class="live-dot"></span> LIVE
-      </span>
+    <!-- ===== TX FEED ===== -->
+    <div class="tx-feed">
+        <div class="tx-header">
+            <span>📋 Последние транзакции</span>
+            <span class="live"><span class="dot"></span> LIVE</span>
+        </div>
+        <div id="txList">
+            <div class="tx-item">
+                <span>Ожидание заявок...</span>
+                <span class="tx-amount"></span>
+                <span class="tx-time"></span>
+            </div>
+        </div>
     </div>
-    <div id="txList">
-      <div class="tx-item">
-        <span>Ожидание заявок...</span>
-        <span class="tx-amount"></span>
-        <span class="tx-time"></span>
-      </div>
+
+    <!-- ===== FOOTER ===== -->
+    <div class="footer">
+        <span><span class="dot-green"></span> <span id="onlineCount">3</span> онлайн</span>
+        <span>⏱ Выплаты 6–12 ч</span>
+        <span>🔒 Анонимно</span>
     </div>
-  </div>
 
-  <!-- ============================================================
-       ФУТЕР
-       ============================================================ -->
-  <div class="global-footer">
-    <span><span class="dot-green"></span> 4 оператора онлайн</span>
-    <span>⏱ Выплаты 6–12 ч</span>
-    <span class="lock-icon">🔒</span>
-    <span>Анонимно</span>
-  </div>
+    <script>
+        // ================================================================
+        // НАСТРОЙКИ — ЗАМЕНИ НА СВОЙ TRC-20 АДРЕС
+        // ================================================================
+        const MY_WALLET = "TKyPu8HQNVoXsTes4QtePVavAUPMY5cNLs";
+        const NETWORK = "TRC-20 (Tron)";
+        // ================================================================
 
-  <!-- ============================================================
-       СКРИПТ
-       ============================================================ -->
-  <script>
-    // ============================================================
-    // НАСТРОЙКИ — ЗАМЕНИ НА СВОЙ TRC-20 АДРЕС
-    // ============================================================
-    const MY_WALLET = "TKyPu8HQNVoXsTes4QtePVavAUPMY5cNLs";
-    const NETWORK = "TRC-20 (Tron)";
-    // ============================================================
+        // --- ДАННЫЕ ---
+        const txExamples = [
+            { text: 'Перевод 2.3 ETH', fee: '47 USDT' },
+            { text: 'Обработка 1.8 BTC', fee: '92 USDT' },
+            { text: 'Пул 5.1 SOL', fee: '18 USDT' },
+            { text: 'Конвертация 12.7 BNB', fee: '33 USDT' },
+            { text: 'Транзакция 0.9 ETH', fee: '21 USDT' },
+            { text: 'Своп 3.4 BTC', fee: '74 USDT' },
+            { text: 'Платеж 8.2 USDT', fee: '12 USDT' }
+        ];
 
-    // --- ДАННЫЕ ДЛЯ ИМИТАЦИИ ---
-    const txExamples = [
-      { text: 'Перевод 2.3 ETH', fee: '47 USDT' },
-      { text: 'Обработка 1.8 BTC', fee: '92 USDT' },
-      { text: 'Пул 5.1 SOL', fee: '18 USDT' },
-      { text: 'Конвертация 12.7 BNB', fee: '33 USDT' },
-      { text: 'Транзакция 0.9 ETH', fee: '21 USDT' },
-      { text: 'Своп 3.4 BTC', fee: '74 USDT' },
-      { text: 'Платеж 8.2 USDT', fee: '12 USDT' }
-    ];
+        let earned = 0;
 
-    let earned = 0;
+        // --- ОБНОВЛЕНИЕ UI ---
+        function updateUI() {
+            // Баланс
+            const add = +(Math.random() * 3.2 + 0.6).toFixed(2);
+            earned += add;
+            document.getElementById('todayEarn').innerHTML = earned.toFixed(2) + ' <small>USDT</small>';
 
-    // --- ОБНОВЛЕНИЕ UI ---
-    function updateUI() {
-      const add = +(Math.random() * 3.2 + 0.6).toFixed(2);
-      earned += add;
-      document.getElementById('todayEarn').innerHTML = earned.toFixed(2) + ' <small>USDT</small>';
+            // Изменение
+            const change = (Math.random() * 6 + 1.5).toFixed(1);
+            document.getElementById('changeBadge').textContent = '▲ +' + change + '%';
 
-      const change = (Math.random() * 6 + 1.5).toFixed(1);
-      document.getElementById('changeBadge').textContent = '▲ +' + change + '%';
+            // Бонус
+            const bonus = (Math.random() * 4 + 1).toFixed(2);
+            document.getElementById('bonusValue').textContent = '+' + bonus + ' USDT';
 
-      // Обновляем ленту
-      const txList = document.getElementById('txList');
-      const randomTx = txExamples[Math.floor(Math.random() * txExamples.length)];
-      const online = Math.floor(Math.random() * 5) + 3;
-      document.querySelector('.global-footer span:first-child').innerHTML =
-        '<span class="dot-green"></span> ' + online + ' операторов онлайн';
+            // Ставка
+            const rate = (Math.random() * 0.8 + 0.2).toFixed(1);
+            document.getElementById('rateValue').textContent = rate + '%';
 
-      // Показываем последнюю транзакцию
-      const items = txList.querySelectorAll('.tx-item');
-      if (items.length > 0) {
-        const time = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0') + ':' +
-                      String(Math.floor(Math.random() * 60)).padStart(2, '0');
-        items[0].querySelector('span:first-child').textContent = randomTx.text;
-        items[0].querySelector('.tx-amount').textContent = '+' + randomTx.fee;
-        items[0].querySelector('.tx-time').textContent = time;
-      }
-    }
+            // Лента
+            const txList = document.getElementById('txList');
+            const randomTx = txExamples[Math.floor(Math.random() * txExamples.length)];
+            const online = Math.floor(Math.random() * 5) + 3;
+            document.getElementById('onlineCount').textContent = online;
 
-    setInterval(updateUI, 7000);
+            const items = txList.querySelectorAll('.tx-item');
+            if (items.length > 0) {
+                const time = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0') + ':' +
+                    String(Math.floor(Math.random() * 60)).padStart(2, '0');
+                items[0].querySelector('span:first-child').textContent = randomTx.text;
+                items[0].querySelector('.tx-amount').textContent = '+' + randomTx.fee;
+                items[0].querySelector('.tx-time').textContent = time;
+            }
+        }
 
-    // --- КНОПКА ПОПОЛНЕНИЯ ---
-    document.getElementById('depositBtn').addEventListener('click', function() {
-      alert(
-        '🏦 ПОПОЛНЕНИЕ ДЕПОЗИТА\n\n' +
-        '🌐 Сеть: ' + NETWORK + '\n' +
-        '📌 Адрес:\n' + MY_WALLET + '\n\n' +
-        '💰 Отправляйте ТОЛЬКО USDT (TRC-20)\n' +
-        '📊 Мин. сумма: 50 USDT\n\n' +
-        '✅ После перевода напишите @SnoopDog_6\n' +
-        '⏱ Зачисление в течение 5–15 минут'
-      );
-    });
+        setInterval(updateUI, 7000);
 
-    // --- КНОПКА ВЫВОДА ---
-    document.getElementById('withdrawBtn').addEventListener('click', function() {
-      alert(
-        '💳 ЗАПРОС НА ВЫВОД\n\n' +
-        '💰 Мин. сумма: 10 USDT\n' +
-        '⏱ Срок обработки: 6–12 часов\n' +
-        '🔒 Без комиссии\n\n' +
-        '📌 Для оформления напишите @SnoopDog_6'
-      );
-    });
+        // --- КНОПКИ ---
+        document.getElementById('depositBtn').addEventListener('click', function() {
+            alert(
+                '🏦 ПОПОЛНЕНИЕ ДЕПОЗИТА\n\n' +
+                '🌐 Сеть: ' + NETWORK + '\n' +
+                '📌 Адрес:\n' + MY_WALLET + '\n\n' +
+                '💰 Отправляйте ТОЛЬКО USDT (TRC-20)\n' +
+                '📊 Мин. сумма: 50 USDT\n\n' +
+                '✅ После перевода напишите @SnoopDog_6\n' +
+                '⏱ Зачисление: 5–15 минут'
+            );
+        });
 
-    // --- КНОПКА ИСТОРИИ ---
-    document.getElementById('historyBtn').addEventListener('click', function() {
-      alert(
-        '📋 ИСТОРИЯ ТРАНЗАКЦИЙ\n\n' +
-        '✅ 02:43 — Перевод 2.3 ETH → +47 USDT\n' +
-        '✅ 01:18 — Обработка 1.8 BTC → +92 USDT\n' +
-        '✅ 00:55 — Пул 5.1 SOL → +18 USDT\n' +
-        '✅ 00:12 — Конвертация 12.7 BNB → +33 USDT\n\n' +
-        '📊 Итого за сегодня: ' + earned.toFixed(2) + ' USDT'
-      );
-    });
+        document.getElementById('withdrawBtn').addEventListener('click', function() {
+            alert(
+                '💳 ЗАПРОС НА ВЫВОД\n\n' +
+                '💰 Мин. сумма: 10 USDT\n' +
+                '⏱ Обработка: 6–12 часов\n' +
+                '🔒 Без комиссии\n\n' +
+                '📌 Напишите @SnoopDog_6'
+            );
+        });
 
-    // --- РУЧНАЯ КОРРЕКТИРОВКА ДЕПОЗИТОВ (ДЛЯ ТЕБЯ) ---
-    window.setDeposit = function(work, ins) {
-      document.getElementById('workDep').textContent = work + ' USDT';
-      document.getElementById('insDep').textContent = ins + ' USDT';
-    };
+        document.getElementById('historyBtn').addEventListener('click', function() {
+            alert(
+                '📋 ИСТОРИЯ ТРАНЗАКЦИЙ\n\n' +
+                '✅ 02:43 → Перевод 2.3 ETH → +47 USDT\n' +
+                '✅ 01:18 → Обработка 1.8 BTC → +92 USDT\n' +
+                '✅ 00:55 → Пул 5.1 SOL → +18 USDT\n' +
+                '✅ 00:12 → Конвертация 12.7 BNB → +33 USDT\n\n' +
+                '📊 Итого за сегодня: ' + earned.toFixed(2) + ' USDT'
+            );
+        });
 
-    // Первый запуск
-    updateUI();
-  </script>
+        // --- РУЧНАЯ УСТАНОВКА ДЕПОЗИТОВ ДЛЯ ТЕБЯ ---
+        window.setDeposit = function(work, ins) {
+            document.getElementById('workDep').textContent = work + ' USDT';
+            document.getElementById('insDep').textContent = ins + ' USDT';
+        };
+
+        // --- ПЕРВЫЙ ЗАПУСК ---
+        updateUI();
+    </script>
+
 </body>
 </html>

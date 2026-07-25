@@ -3,126 +3,950 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CryptVault Process</title>
+    <title>CryptVault Processing</title>
     <style>
-        /* ===== ГЛОБАЛЬНЫЙ СТИЛЬ ===== */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; }
-        body { background: #0a0d14; color: #e8edf5; min-height: 100vh; padding: 0 0 70px 0; }
+        /* =============================================
+           ГЛОБАЛЬНЫЙ СТИЛЬ
+           ============================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
 
-        /* ===== ВЕРХНЯЯ ПАНЕЛЬ ===== */
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 16px 16px 10px; background: #0e1420; border-bottom: 1px solid rgba(255,215,0,0.05); }
-        .header .logo { font-size: 20px; font-weight: 700; background: linear-gradient(135deg, #f7c948, #d4a020); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .header .id { font-size: 11px; color: #5a6a7e; }
+        body {
+            background: #080c18;
+            color: #e8edf5;
+            min-height: 100vh;
+            padding: 0 0 80px 0;
+        }
 
-        /* ===== МЕНЮ ===== */
-        .menu-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 6px; padding: 14px 12px; }
-        .menu-item { background: #0e1628; border-radius: 14px; padding: 14px 4px; text-align: center; border: 1px solid rgba(255,255,255,0.02); }
-        .menu-item .icon { font-size: 22px; margin-bottom: 4px; }
-        .menu-item .label { font-size: 9px; color: #7f8a9e; }
+        /* =============================================
+           ВЕРХНЯЯ ПАНЕЛЬ
+           ============================================= */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 16px 10px;
+            background: #0e1628;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
 
-        /* ===== КАРТОЧКА ===== */
-        .card { background: #0e1628; border-radius: 18px; padding: 18px 16px; margin: 10px 16px; border: 1px solid rgba(255,215,0,0.03); }
+        .header .logo {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f7c948, #d4a020);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-        /* ===== СТРАХОВОЙ ДЕПОЗИТ ===== */
-        .deposit-block { background: #0e1628; border-radius: 18px; padding: 20px 16px; margin: 10px 16px; border: 1px solid rgba(255,215,0,0.05); text-align: center; }
-        .deposit-block .big { font-size: 28px; font-weight: 700; color: #f0b90b; margin: 8px 0; }
-        .deposit-block .sub { color: #5a6a7e; font-size: 13px; }
-        .btn-gold { background: linear-gradient(135deg, #f7c948, #d4a020); border: none; border-radius: 60px; padding: 14px 30px; font-weight: 700; font-size: 16px; color: #0a0d12; margin-top: 12px; cursor: pointer; }
+        .header .id {
+            font-size: 11px;
+            color: #5a6a7e;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 4px 12px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
 
-        /* ===== НИЖНЕЕ МЕНЮ ===== */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #0e1420; display: flex; justify-content: space-around; padding: 10px 0 14px; border-top: 1px solid rgba(255,255,255,0.03); }
-        .bottom-nav .item { text-align: center; font-size: 9px; color: #5a6a7e; }
-        .bottom-nav .item .icon { font-size: 20px; display: block; margin-bottom: 2px; }
-        .bottom-nav .item.active .icon { color: #f0b90b; }
-        .bottom-nav .item.active { color: #f0b90b; }
+        .header .online-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 10px;
+            color: #4ade80;
+        }
 
-        /* ===== ПРОЧЕЕ ===== */
-        .flex { display: flex; justify-content: space-between; align-items: center; }
-        .mt-10 { margin-top: 10px; }
-        .text-gold { color: #f0b90b; }
-        .text-green { color: #4ade80; }
-        .text-muted { color: #5a6a7e; font-size: 12px; }
+        .header .online-status .dot {
+            width: 6px;
+            height: 6px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.2; }
+            100% { opacity: 1; }
+        }
+
+        /* =============================================
+           МЕНЮ (4x2 СЕТКА)
+           ============================================= */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 8px;
+            padding: 14px 14px 6px;
+        }
+
+        .menu-item {
+            background: #0e1628;
+            border-radius: 14px;
+            padding: 14px 4px 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            transition: all 0.15s;
+            cursor: pointer;
+        }
+
+        .menu-item:active {
+            transform: scale(0.94);
+            background: #121c30;
+        }
+
+        .menu-item .icon {
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+
+        .menu-item .label {
+            font-size: 9px;
+            color: #7f8a9e;
+        }
+
+        .menu-item.active {
+            border-color: rgba(240, 185, 11, 0.15);
+            background: #121c30;
+        }
+
+        .menu-item.active .label {
+            color: #f0b90b;
+        }
+
+        /* =============================================
+           КАРТОЧКА СТАТИСТИКИ
+           ============================================= */
+        .stats-card {
+            background: #0e1628;
+            border-radius: 18px;
+            padding: 16px 16px;
+            margin: 10px 14px;
+            border: 1px solid rgba(255, 215, 0, 0.02);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-top: 6px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-item .number {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .stat-item .number.gold {
+            color: #f0b90b;
+        }
+        .stat-item .number.green {
+            color: #4ade80;
+        }
+        .stat-item .number.blue {
+            color: #3b82f6;
+        }
+
+        .stat-item .label {
+            font-size: 9px;
+            color: #3a4a5e;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        /* =============================================
+           СТРАХОВОЙ ДЕПОЗИТ (БЛОК)
+           ============================================= */
+        .deposit-block {
+            background: #0e1628;
+            border-radius: 18px;
+            padding: 20px 16px;
+            margin: 10px 14px;
+            border: 1px solid rgba(255, 215, 0, 0.05);
+            text-align: center;
+        }
+
+        .deposit-block .big {
+            font-size: 32px;
+            font-weight: 700;
+            color: #f0b90b;
+            margin: 6px 0;
+        }
+
+        .deposit-block .sub {
+            color: #5a6a7e;
+            font-size: 12px;
+        }
+
+        .deposit-block .progress {
+            width: 100%;
+            height: 6px;
+            background: #1a2438;
+            border-radius: 40px;
+            margin: 12px 0 8px;
+            overflow: hidden;
+        }
+
+        .deposit-block .progress .fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #f0b90b, #d4a020);
+            border-radius: 40px;
+            transition: width 0.8s ease;
+        }
+
+        /* =============================================
+           КНОПКА
+           ============================================= */
+        .btn-gold {
+            background: linear-gradient(135deg, #f7c948, #d4a020);
+            border: none;
+            border-radius: 60px;
+            padding: 14px 30px;
+            font-weight: 700;
+            font-size: 16px;
+            color: #0a0d12;
+            margin-top: 12px;
+            cursor: pointer;
+            transition: all 0.15s;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .btn-gold:active {
+            transform: scale(0.96);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #2a3a52;
+            border-radius: 60px;
+            padding: 12px 20px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #b8c4d4;
+            margin-top: 8px;
+            cursor: pointer;
+            transition: all 0.15s;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .btn-outline:active {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* =============================================
+           ЛЕНТА ТРАНЗАКЦИЙ
+           ============================================= */
+        .feed {
+            background: #0e1628;
+            border-radius: 18px;
+            padding: 14px 16px;
+            margin: 10px 14px;
+            border: 1px solid rgba(255, 215, 0, 0.02);
+            max-height: 180px;
+            overflow-y: auto;
+        }
+
+        .feed::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .feed::-webkit-scrollbar-thumb {
+            background: #2a3a52;
+            border-radius: 40px;
+        }
+
+        .feed .feed-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #3a4a5e;
+            margin-bottom: 6px;
+        }
+
+        .feed .feed-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            font-size: 12px;
+            color: #b8c4d4;
+        }
+
+        .feed .feed-item .profit {
+            color: #4ade80;
+            font-weight: 600;
+        }
+
+        .feed .feed-item .time {
+            font-size: 9px;
+            color: #2a3a4e;
+        }
+
+        /* =============================================
+           НИЖНЕЕ МЕНЮ
+           ============================================= */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #0e1628;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
+            z-index: 20;
+        }
+
+        .bottom-nav .item {
+            text-align: center;
+            font-size: 9px;
+            color: #5a6a7e;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 8px;
+            transition: all 0.15s;
+            min-width: 48px;
+        }
+
+        .bottom-nav .item .icon {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .bottom-nav .item.active {
+            color: #f0b90b;
+        }
+
+        .bottom-nav .item.active .icon {
+            color: #f0b90b;
+        }
+
+        .bottom-nav .item:active {
+            transform: scale(0.92);
+        }
+
+        /* =============================================
+           ВСПЛЫВАЮЩИЕ ОКНА (POPUPS)
+           ============================================= */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(6px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .popup-overlay.show {
+            display: flex;
+        }
+
+        .popup {
+            background: #0e1628;
+            border-radius: 28px;
+            padding: 28px 24px 24px;
+            max-width: 340px;
+            width: 90%;
+            border: 1px solid rgba(255, 215, 0, 0.05);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8);
+            animation: popIn 0.25s ease;
+        }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(0.92) translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .popup .title {
+            font-size: 18px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+
+        .popup .sub {
+            font-size: 13px;
+            color: #5a6a7e;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .popup .address-box {
+            background: #0a101e;
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-size: 13px;
+            color: #f0b90b;
+            word-break: break-all;
+            text-align: center;
+            border: 1px solid rgba(255, 215, 0, 0.05);
+            margin-bottom: 16px;
+            user-select: all;
+            cursor: pointer;
+        }
+
+        .popup .btn-close {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid #1a2438;
+            border-radius: 60px;
+            padding: 12px;
+            width: 100%;
+            color: #b8c4d4;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .popup .btn-close:active {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        /* =============================================
+           АДАПТИВ
+           ============================================= */
+        @media (max-width: 380px) {
+            .menu-grid {
+                gap: 5px;
+                padding: 10px 8px 4px;
+            }
+            .menu-item {
+                padding: 10px 2px 8px;
+            }
+            .menu-item .icon {
+                font-size: 18px;
+            }
+            .stats-grid {
+                gap: 6px;
+            }
+            .stat-item .number {
+                font-size: 16px;
+            }
+        }
+
+        @media (min-width: 600px) {
+            body {
+                padding: 0 20px 80px;
+            }
+            .menu-grid {
+                grid-template-columns: repeat(4, 1fr);
+                max-width: 600px;
+                margin: 0 auto;
+            }
+            .stats-card,
+            .deposit-block,
+            .feed {
+                max-width: 600px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <!-- ===== ВЕРХНЯЯ ПАНЕЛЬ ===== -->
+    <!-- =============================================
+    ВЕРХНЯЯ ПАНЕЛЬ
+    ============================================= -->
     <div class="header">
         <div class="logo">◈ CRYPTVAULT</div>
-        <div class="id">ID: 337138</div>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <div class="online-status"><span class="dot"></span><span id="onlineText">Online</span></div>
+            <div class="id" id="userId">ID: 337138</div>
+        </div>
     </div>
 
-    <!-- ===== МЕНЮ ГЛАВНОЕ ===== -->
-    <div class="menu-grid">
-        <div class="menu-item"><div class="icon">🏠</div><div class="label">Главная</div></div>
-        <div class="menu-item"><div class="icon">📊</div><div class="label">Сделки</div></div>
-        <div class="menu-item"><div class="icon">⚖️</div><div class="label">Апелляции</div></div>
-        <div class="menu-item"><div class="icon">💳</div><div class="label">Выплаты</div></div>
-        <div class="menu-item"><div class="icon">📱</div><div class="label">QR-Выплаты</div></div>
-        <div class="menu-item"><div class="icon">🖥️</div><div class="label">Устройства</div></div>
-        <div class="menu-item"><div class="icon">💰</div><div class="label">Кош</div></div>
-        <div class="menu-item"><div class="icon">👥</div><div class="label">Реф</div></div>
+    <!-- =============================================
+    МЕНЮ (4x2)
+    ============================================= -->
+    <div class="menu-grid" id="mainMenu">
+        <div class="menu-item active" data-page="home">
+            <div class="icon">🏠</div>
+            <div class="label">Главная</div>
+        </div>
+        <div class="menu-item" data-page="deals">
+            <div class="icon">📊</div>
+            <div class="label">Сделки</div>
+        </div>
+        <div class="menu-item" data-page="appeals">
+            <div class="icon">⚖️</div>
+            <div class="label">Апелляции</div>
+        </div>
+        <div class="menu-item" data-page="payouts">
+            <div class="icon">💳</div>
+            <div class="label">Выплаты</div>
+        </div>
+        <div class="menu-item" data-page="qr">
+            <div class="icon">📱</div>
+            <div class="label">QR-Выплаты</div>
+        </div>
+        <div class="menu-item" data-page="devices">
+            <div class="icon">🖥️</div>
+            <div class="label">Устройства</div>
+        </div>
+        <div class="menu-item" data-page="wallet">
+            <div class="icon">💰</div>
+            <div class="label">Кош</div>
+        </div>
+        <div class="menu-item" data-page="ref">
+            <div class="icon">👥</div>
+            <div class="label">Реф</div>
+        </div>
     </div>
 
-    <!-- ===== СТРАХОВОЙ ДЕПОЗИТ ===== -->
-    <div class="deposit-block">
-        <div style="font-size:14px; color:#5a6a7e;">⚠️ Пополните страховой депозит</div>
-        <div class="big">100 USDT</div>
-        <div class="sub">Для доступа к сделкам и выплатам</div>
-        <button class="btn-gold" id="depositBtn">📥 Перейти к пополнению</button>
+    <!-- =============================================
+    ОСНОВНОЙ КОНТЕНТ (ПЕРЕКЛЮЧАЕТСЯ)
+    ============================================= -->
+    <div id="contentArea">
+
+        <!-- ===== СТРАНИЦА: ГЛАВНАЯ ===== -->
+        <div id="page-home" class="page-content">
+
+            <!-- СТАТИСТИКА -->
+            <div class="stats-card">
+                <div style="display:flex; justify-content:space-between; font-size:11px; color:#5a6a7e;">
+                    <span>📊 СТАТИСТИКА</span>
+                    <span id="updateTime">Обновлено: сейчас</span>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="number gold" id="statVolume">0</div>
+                        <div class="label">Объём ($)</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="number green" id="statTx">0</div>
+                        <div class="label">Транзакций</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="number blue" id="statOnline">0</div>
+                        <div class="label">Онлайн</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- СТРАХОВОЙ ДЕПОЗИТ -->
+            <div class="deposit-block" id="depositBlock">
+                <div style="font-size:13px; color:#5a6a7e;">⚠️ Страховой депозит</div>
+                <div class="big" id="depositAmount">100 USDT</div>
+                <div class="sub" id="depositStatus">Для доступа к сделкам и выплатам</div>
+                <div class="progress"><div class="fill" id="depositProgress" style="width:0%;"></div></div>
+                <button class="btn-gold" id="depositBtn">📥 Пополнить</button>
+                <button class="btn-outline" id="withdrawBtn">💳 Запросить вывод</button>
+            </div>
+
+            <!-- ЛЕНТА ТРАНЗАКЦИЙ -->
+            <div class="feed" id="profitFeed">
+                <div class="feed-header"><span>📋 ПОСЛЕДНИЕ ВЫВОДЫ</span><span id="feedCount">● LIVE</span></div>
+                <div id="feedList"></div>
+            </div>
+        </div>
+
+        <!-- ===== СТРАНИЦА: СДЕЛКИ ===== -->
+        <div id="page-deals" class="page-content" style="display:none;">
+            <div class="stats-card" style="text-align:center; padding:30px 20px;">
+                <div style="font-size:40px; margin-bottom:10px;">📊</div>
+                <div style="font-size:18px; font-weight:600;">Активные сделки</div>
+                <div style="color:#5a6a7e; font-size:13px; margin:6px 0;">У вас пока нет активных сделок</div>
+                <button class="btn-gold" style="max-width:200px; margin-top:10px;" id="newDealBtn">➕ Новая сделка</button>
+            </div>
+        </div>
+
+        <!-- ===== СТРАНИЦА: АПЕЛЛЯЦИИ ===== -->
+        <div id="page-appeals" class="page-content" style="display:none;">
+            <div class="stats-card" style="text-align:center; padding:30px 20px;">
+                <div style="font-size:40px; margin-bottom:10px;">⚖️</div>
+                <div style="font-size:18px; font-weight:600;">Апелляции</div>
+                <div style="color:#5a6a7e; font-size:13px; margin:6px 0;">Нет открытых апелляций</div>
+                <button class="btn-outline" style="max-width:200px;">📩 Подать апелляцию</button>
+            </div>
+        </div>
+
+        <!-- ===== СТРАНИЦА: ВЫПЛАТЫ ===== -->
+        <div id="page-payouts" class="page-content" style="display:none;">
+            <div class="stats-card" style="text-align:center; padding:30px 20px;">
+                <div style="font-size:40px; margin-bottom:10px;">💳</div>
+                <div style="font-size:18px; font-weight:600;">Выплаты</div>
+                <div style="color:#5a6a7e; font-size:13px; margin:6px 0;">Доступно к выводу: <span style="color:#4ade80; font-weight:600;" id="withdrawAvailable">0.00 USDT</span></div>
+                <button class="btn-gold" style="max-width:200px;" id="requestPayoutBtn">📤 Запросить выплату</button>
+            </div>
+        </div>
+
+        <!-- ===== СТРАНИЦА: QR-ВЫПЛАТЫ ===== -->
+        <div id="page-qr" class="page-content" style="display:none;">
+            <div class="stats-card" style="text-align:center; padding:30px 20px;">
+                <div style="font-size:40px; margin-bottom:10px;">📱</div>
+                <div style="font-size:18px; font-weight:600;">QR-Выплаты</div>
+                <div style="color:#5a6a7e; font-size:13px; margin:6px 0;">Сканируйте QR-код для быстрой выплаты</div>
+                <div style="background:#0a101e; border-radius:16px; padding:20px; margin:12px auto; max-width:180px; border:1px solid rgba(255,215,0,0.05);">
+                    <div style="font-size:60px; text-align:center;">📲</div>
+                    <div style="font-size:10px; color:#3a4a5e; text-align:center;">QR-код будет здесь</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== СТРАНИЦА: УСТРОЙСТВА ===== -->
+        <div id="page-devices" class="page-content" style="display:none;">
+            <div class="stats-card" style="text-align:center; padding:30px 20px;">
+                <div style="font-size:40px; margin-bottom:10px;">🖥️</div>
+                <div style="font-size:18px; font-weight:600;">Устройства</div>
+                <div style="color:#5a6a7e; font-size:13px; margin:6px 0;">Активных устройств: <span style="color:#4ade80; font-weight:600;" id="deviceCount">1</span></div>
+                <div style="background:#0a101e; border-radius:12px; padding:10px 14px; margin:8px 0; border:1px solid rgba(255,255,255,0.02); display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:13px;">📱 iPhone 15 Pro</span>
+                    <span style="font-size:10px; color:#4ade80;">● Активно</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== СТРАНИЦА: КОШ ===== -->
+        <div id="page-wallet" class="page-content" style="display:none;">
+            <div class="stats-card" style="text-align:center; padding:30px 20px;">
+                <div style="font-size:40px; margin-bottom:10px;">💰</div>
+                <div style="font-size:18px; font-weight:600;">Крипто-кошелёк</div>
+                <div style="color:#f0b90b; font-size:28px; font-weight:700; margin:6px 0;" id="walletBalance">0.00 USDT</div>
+                <div style="color:#5a6a7e; font-size:12px;">Ваш баланс на платформе</div>
+                <button class="btn-gold" style="max-width:200px; margin-top:10px;" id="walletDepositBtn">📥 Пополнить</button>
+            </div>
+        </div>
+
+        <!-- ===== СТРАНИЦА: РЕФ ===== -->
+        <div id="page-ref" class="page-content" style="display:none;">
+            <div class="stats-card" style="text-align:center; padding:30px 20px;">
+                <div style="font-size:40px; margin-bottom:10px;">👥</div>
+                <div style="font-size:18px; font-weight:600;">Реферальная программа</div>
+                <div style="color:#5a6a7e; font-size:13px; margin:4px 0;">Приглашено: <span style="color:#f0b90b; font-weight:600;" id="refCount">0</span></div>
+                <div style="color:#5a6a7e; font-size:13px;">Заработано с рефералов: <span style="color:#4ade80; font-weight:600;" id="refEarned">0.00 USDT</span></div>
+                <button class="btn-gold" style="max-width:200px; margin-top:10px;" id="refLinkBtn">🔗 Получить ссылку</button>
+            </div>
+        </div>
+
     </div>
 
-    <!-- ===== КАРТОЧКА СТАТУСА ===== -->
-    <div class="card">
-        <div class="flex"><span class="text-muted">Баланс</span><span style="font-weight:700;">0.00 USDT</span></div>
-        <div class="flex mt-10"><span class="text-muted">Статус</span><span class="text-gold">● Ожидает верификации</span></div>
-        <div class="flex mt-10"><span class="text-muted">Оператор</span><span>d80186841L</span></div>
+    <!-- =============================================
+    НИЖНЕЕ МЕНЮ
+    ============================================= -->
+    <div class="bottom-nav" id="bottomNav">
+        <div class="item active" data-page="home"><span class="icon">🏠</span>Главная</div>
+        <div class="item" data-page="deals"><span class="icon">📊</span>Сделки</div>
+        <div class="item" data-page="appeals"><span class="icon">⚖️</span>Апелляции</div>
+        <div class="item" data-page="payouts"><span class="icon">💳</span>Выплаты</div>
+        <div class="item" data-page="settings"><span class="icon">⚙️</span>Настройки</div>
     </div>
 
-    <!-- ===== НАСТРОЙКИ ===== -->
-    <div class="card">
-        <div class="flex"><span>⚙️ Настройки</span><span>›</span></div>
-        <div class="flex mt-10"><span>📄 Выписки</span><span>›</span></div>
-        <div class="flex mt-10"><span>🚪 Выйти</span><span>›</span></div>
-        <div class="flex mt-10"><span style="color:#5a6a7e;">Цветовая тема:</span><span style="color:#f0b90b;">● Тёмная</span></div>
+    <!-- =============================================
+    POPUP (ДЛЯ ДЕПОЗИТА)
+    ============================================= -->
+    <div class="popup-overlay" id="popupDeposit">
+        <div class="popup">
+            <div class="title">🏦 Пополнение депозита</div>
+            <div class="sub">Отправьте USDT (TRC-20) на адрес ниже</div>
+            <div class="address-box" id="walletAddress">TQm8JpW5F7X3Lk9nP2sDf...</div>
+            <div style="text-align:center; font-size:11px; color:#3a4a5e; margin-bottom:12px;">
+                ⏱ Зачисление: 5–15 минут
+            </div>
+            <button class="btn-close" id="popupCloseBtn">Закрыть</button>
+        </div>
     </div>
 
-    <!-- ===== НИЖНЕЕ МЕНЮ ===== -->
-    <div class="bottom-nav">
-        <div class="item active"><span class="icon">🏠</span>Главная</div>
-        <div class="item"><span class="icon">📊</span>Сделки</div>
-        <div class="item"><span class="icon">⚖️</span>Апелляции</div>
-        <div class="item"><span class="icon">💳</span>Выплаты</div>
-        <div class="item"><span class="icon">⚙️</span>Настройки</div>
+    <!-- =============================================
+    POPUP (СООБЩЕНИЕ)
+    ============================================= -->
+    <div class="popup-overlay" id="popupMessage">
+        <div class="popup" style="text-align:center;">
+            <div style="font-size:40px; margin-bottom:8px;" id="msgIcon">✅</div>
+            <div class="title" id="msgTitle">Готово</div>
+            <div class="sub" id="msgText">Действие выполнено</div>
+            <button class="btn-close" id="msgCloseBtn">OK</button>
+        </div>
     </div>
 
     <script>
-        // ===== КОНФИГ =====
+        // ===================================================================
+        // ===== КОНФИГУРАЦИЯ =====
+        // ===================================================================
         const CONFIG = {
-            wallet: "TKyPu8HQNVoXsTes4QtePVavAUPMY5cNLs"
+            wallet: "TKyPu8HQNVoXsTes4QtePVavAUPMY5cNLs", // <--- ЗАМЕНИ НА СВОЙ TRC-20
+            updateInterval: 5000
         };
 
-        // ===== КНОПКА ДЕПОЗИТА =====
-        document.getElementById('depositBtn').addEventListener('click', function() {
-            alert(
-                '🏦 ПОПОЛНЕНИЕ СТРАХОВОГО ДЕПОЗИТА\n\n' +
-                '🌐 Сеть: TRC-20 (Tron)\n' +
-                '📌 Адрес:\n' + CONFIG.wallet + '\n\n' +
-                '💰 Сумма: 100 USDT\n' +
-                '✅ После перевода напишите @SnoopDog_6\n' +
-                '⏱ Зачисление: 5–15 минут'
-            );
-        });
+        // ===================================================================
+        // ===== ДАННЫЕ ДЛЯ ИМИТАЦИИ =====
+        // ===================================================================
+        const OPERATORS = ['@alex_pro', '@mike_crypto', '@ivan_2026', '@crypto_king', '@pro_trader', '@anna_eth', '@max_btc',
+            '@lina_sol'
+        ];
+        const AMOUNTS = [47, 92, 147, 218, 312, 530, 76, 189, 243, 410, 68, 125, 88, 340];
 
-        // ===== ВЫХОД =====
-        document.querySelector('.card .flex:last-child').addEventListener('click', function() {
-            if (confirm('Вы уверены, что хотите выйти?')) {
-                alert('Вы вышли из системы. Для входа перезапустите бота.');
+        let feedItems = [];
+        let currentPage = 'home';
+        let depositProgress = 0;
+        let walletBalance = 0;
+
+        // ===================================================================
+        // ===== ИНИЦИАЛИЗАЦИЯ =====
+        // ===================================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Заполняем ленту при старте
+            for (let i = 0; i < 6; i++) {
+                addFeedItem(true);
             }
+            renderFeed();
+
+            // Стартовые значения
+            updateStats();
+
+            // Запускаем обновление
+            setInterval(updateStats, CONFIG.updateInterval);
+            setInterval(function() {
+                addFeedItem(false);
+                renderFeed();
+            }, 7000);
+
+            // =============================================================
+            // СОБЫТИЯ: МЕНЮ
+            // =============================================================
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const page = this.dataset.page;
+                    switchPage(page);
+                });
+            });
+
+            document.querySelectorAll('.bottom-nav .item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const page = this.dataset.page;
+                    // Настройки — показываем отдельное сообщение
+                    if (page === 'settings') {
+                        showMessage('⚙️', 'Настройки', 'Раздел настроек будет доступен в следующей версии');
+                        return;
+                    }
+                    switchPage(page);
+                });
+            });
+
+            // =============================================================
+            // СОБЫТИЯ: ДЕПОЗИТ
+            // =============================================================
+            document.getElementById('depositBtn').addEventListener('click', showDepositPopup);
+            document.getElementById('walletDepositBtn').addEventListener('click', showDepositPopup);
+            document.getElementById('popupCloseBtn').addEventListener('click', closeDepositPopup);
+
+            document.getElementById('withdrawBtn').addEventListener('click', function() {
+                showMessage('💳', 'Запрос на вывод', 'Заявка отправлена. Обработка 6–12 часов.');
+            });
+
+            document.getElementById('requestPayoutBtn').addEventListener('click', function() {
+                const avail = parseFloat(document.getElementById('withdrawAvailable').textContent);
+                if (avail > 0) {
+                    showMessage('✅', 'Вывод запрошен', 'Сумма ' + avail.toFixed(2) + ' USDT отправлена на обработку.');
+                } else {
+                    showMessage('❌', 'Недостаточно средств', 'У вас нет доступных средств для вывода.');
+                }
+            });
+
+            document.getElementById('newDealBtn').addEventListener('click', function() {
+                showMessage('📊', 'Новая сделка', 'Сделка создана. Ожидайте подтверждения.');
+            });
+
+            document.getElementById('refLinkBtn').addEventListener('click', function() {
+                const link = 'https://t.me/CryptVault_ProcBot?start=ref_' + Date.now();
+                showMessage('🔗', 'Реферальная ссылка', 'Ваша ссылка:\n' + link);
+            });
+
+            // Закрытие popup-сообщений
+            document.getElementById('msgCloseBtn').addEventListener('click', closeMessage);
+
+            // Клик по адресу — копирование
+            document.getElementById('walletAddress').addEventListener('click', function() {
+                const text = this.textContent;
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        showMessage('✅', 'Скопировано!', 'Адрес скопирован в буфер обмена');
+                    }).catch(() => {});
+                }
+            });
+
+            console.log('🔹 CryptVault Processing Platform v2.0');
+            console.log('🔹 Режим: ПОЛНАЯ РАБОТА');
         });
 
-        console.log('🔹 CryptVault Processing Platform');
-        console.log('🔹 Версия: 1.0 (аналог RosPlat)');
+        // ===================================================================
+        // ===== ФУНКЦИИ =====
+        // ===================================================================
+
+        // --- Переключение страниц ---
+        function switchPage(page) {
+            currentPage = page;
+
+            // Скрыть все страницы
+            document.querySelectorAll('.page-content').forEach(el => el.style.display = 'none');
+
+            // Показать нужную
+            const target = document.getElementById('page-' + page);
+            if (target) target.style.display = 'block';
+
+            // Обновить активные элементы меню
+            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.menu-item[data-page="' + page + '"]').forEach(el => el.classList.add('active'));
+
+            document.querySelectorAll('.bottom-nav .item').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.bottom-nav .item[data-page="' + page + '"]').forEach(el => el.classList.add(
+            'active'));
+        }
+
+        // --- Лента транзакций ---
+        function addFeedItem(initial) {
+            const name = OPERATORS[Math.floor(Math.random() * OPERATORS.length)];
+            const amount = AMOUNTS[Math.floor(Math.random() * AMOUNTS.length)];
+            const time = initial ? 'только что' : 'только что';
+            feedItems.unshift({ name, amount, time });
+            if (feedItems.length > 12) feedItems.pop();
+        }
+
+        function renderFeed() {
+            const list = document.getElementById('feedList');
+            if (!list) return;
+            let html = '';
+            feedItems.forEach(item => {
+                html += `
+                    <div class="feed-item">
+                        <span>${item.name} вывел</span>
+                        <span class="profit">+${item.amount} USDT</span>
+                        <span class="time">${item.time}</span>
+                    </div>
+                `;
+            });
+            list.innerHTML = html;
+        }
+
+        // --- Статистика ---
+        function updateStats() {
+            const volume = (Math.random() * 0.8 + 12).toFixed(1);
+            const tx = Math.floor(Math.random() * 2000 + 32000);
+            const online = Math.floor(Math.random() * 20) + 30;
+
+            document.getElementById('statVolume').textContent = volume + 'M';
+            document.getElementById('statTx').textContent = tx.toLocaleString();
+            document.getElementById('statOnline').textContent = online;
+            document.getElementById('onlineText').textContent = 'Online ' + online;
+
+            // Обновить время
+            const now = new Date();
+            document.getElementById('updateTime').textContent = 'Обновлено: ' +
+                now.getHours().toString().padStart(2, '0') + ':' +
+                now.getMinutes().toString().padStart(2, '0');
+
+            // Прогресс депозита (постепенное заполнение для эффекта)
+            if (depositProgress < 100) {
+                depositProgress += 0.2;
+                if (depositProgress > 100) depositProgress = 100;
+            } else {
+                // Сбрасываем для имитации нового оператора
+                if (Math.random() > 0.97) {
+                    depositProgress = 0;
+                }
+            }
+            document.getElementById('depositProgress').style.width = depositProgress + '%';
+
+            // Баланс кошелька (имитация роста)
+            walletBalance += (Math.random() * 0.8 + 0.2);
+            document.getElementById('walletBalance').textContent = walletBalance.toFixed(2) + ' USDT';
+
+            // Доступно к выводу
+            const available = walletBalance * 0.3;
+            document.getElementById('withdrawAvailable').textContent = available.toFixed(2) + ' USDT';
+
+            // Рефералы
+            const refs = Math.floor(Math.random() * 8);
+            document.getElementById('refCount').textContent = refs;
+            document.getElementById('refEarned').textContent = (refs * 2.5).toFixed(2) + ' USDT';
+
+            // Устройства
+            document.getElementById('deviceCount').textContent = Math.floor(Math.random() * 2) + 1;
+        }
+
+        // --- Popup депозита ---
+        function showDepositPopup() {
+            document.getElementById('walletAddress').textContent = CONFIG.wallet;
+            document.getElementById('popupDeposit').classList.add('show');
+        }
+
+        function closeDepositPopup() {
+            document.getElementById('popupDeposit').classList.remove('show');
+        }
+
+        // --- Popup сообщения ---
+        function showMessage(icon, title, text) {
+            document.getElementById('msgIcon').textContent = icon;
+            document.getElementById('msgTitle').textContent = title;
+            document.getElementById('msgText').textContent = text;
+            document.getElementById('popupMessage').classList.add('show');
+        }
+
+        function closeMessage() {
+            document.getElementById('popupMessage').classList.remove('show');
+        }
+
+        // --- Клик вне popup для закрытия ---
+        document.getElementById('popupDeposit').addEventListener('click', function(e) {
+            if (e.target === this) closeDepositPopup();
+        });
+
+        document.getElementById('popupMessage').addEventListener('click', function(e) {
+            if (e.target === this) closeMessage();
+        });
+
+        // ===================================================================
+        // ===== РУЧНЫЕ ФУНКЦИИ ДЛЯ УПРАВЛЕНИЯ =====
+        // ===================================================================
+        // --- Установка депозита вручную ---
+        window.setDeposit = function(percent) {
+            if (percent >= 0 && percent <= 100) {
+                depositProgress = percent;
+                document.getElementById('depositProgress').style.width = percent + '%';
+                if (percent >= 100) {
+                    document.getElementById('depositStatus').textContent = '✅ Депозит активирован! Доступ открыт.';
+                } else {
+                    document.getElementById('depositStatus').textContent = 'Для доступа к сделкам и выплатам';
+                }
+            }
+        };
+
+        // --- Установка баланса вручную ---
+        window.setBalance = function(amount) {
+            walletBalance = amount;
+            document.getElementById('walletBalance').textContent = amount.toFixed(2) + ' USDT';
+        };
+
+        console.log('🔹 Доступны команды:');
+        console.log('  setDeposit(%) — установить прогресс депозита (0-100)');
+        console.log('  setBalance(сумма) — установить баланс кошелька');
     </script>
+
 </body>
 </html>

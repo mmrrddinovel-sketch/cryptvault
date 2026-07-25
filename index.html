@@ -5,106 +5,143 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CryptVault Global Processing</title>
     <style>
+        /* ===== ГЛОБАЛЬНЫЙ СБРОС ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; }
         body { background: #060a12; color: #e8edf5; padding: 16px 14px 30px; min-height: 100vh; }
 
-        /* ГЛОБАЛЬНЫЙ СТАТУС-БАР */
+        /* ===== СТАТУС-БАР ===== */
         .status-bar { display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: #4ade80; border-bottom: 1px solid rgba(255,255,255,0.02); padding-bottom: 10px; }
-        .status-bar .dot { display: inline-block; width: 6px; height: 6px; background: #4ade80; border-radius: 50%; margin-right: 4px; animation: pulse 1.5s infinite; }
+        .status-bar .dot { display: inline-block; width: 6px; height: 6px; background: #4ade80; border-radius: 50%; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0%{opacity:1;} 50%{opacity:0.2;} 100%{opacity:1;} }
 
-        .logo { font-size: 22px; font-weight: 700; background: linear-gradient(135deg, #f7c948, #d4a020); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 0.5px; }
+        /* ===== ЛОГОТИП ===== */
+        .logo { font-size: 24px; font-weight: 700; background: linear-gradient(135deg, #f7c948, #d4a020); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 0.5px; }
         .sub { color: #5a6a7e; font-size: 13px; margin: 2px 0 12px; }
 
-        /* СЕТКА КАРТОЧЕК */
-        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 14px 0; }
-        .stat-card { background: #0e1628; border-radius: 16px; padding: 14px 10px; border: 1px solid rgba(255,215,0,0.03); text-align: center; }
+        /* ===== СЕТКА СТАТИСТИКИ ===== */
+        .grid-4 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0; }
+        .stat-card { background: #0e1628; border-radius: 16px; padding: 14px 12px; border: 1px solid rgba(255,215,0,0.03); text-align: center; }
         .stat-card .num { font-size: 20px; font-weight: 700; color: #fff; }
         .stat-card .num.gold { color: #f0b90b; }
         .stat-card .num.green { color: #4ade80; }
+        .stat-card .num.blue { color: #3b82f6; }
         .stat-card .label { font-size: 9px; text-transform: uppercase; color: #3a4a5e; margin-top: 2px; }
 
-        /* ГРАФИК (ПСЕВДО) */
+        /* ===== КАРТА МИРА (CSS-ИМИТАЦИЯ) ===== */
+        .world-map { background: #0e1628; border-radius: 20px; padding: 16px; border: 1px solid rgba(255,215,0,0.03); margin: 14px 0; text-align: center; }
+        .world-map .map-placeholder { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; margin: 10px 0; }
+        .world-map .dot-country { display: inline-block; width: 8px; height: 8px; background: #4ade80; border-radius: 50%; margin: 2px; animation: pulse 2s infinite; }
+        .world-map .dot-country:nth-child(2n) { background: #f0b90b; }
+        .world-map .dot-country:nth-child(3n) { background: #3b82f6; }
+
+        /* ===== ГРАФИК ===== */
         .chart-area { background: #0e1628; border-radius: 20px; padding: 18px 16px; border: 1px solid rgba(255,215,0,0.03); margin: 14px 0; }
-        .chart-bars { display: flex; align-items: flex-end; gap: 8px; height: 80px; margin-top: 10px; }
-        .bar { flex: 1; background: linear-gradient(180deg, #f0b90b, #d4a020); border-radius: 6px 6px 0 0; min-height: 8px; animation: grow 1.5s ease-out; }
-        @keyframes grow { from { height: 8px; } to { height: var(--h); } }
+        .chart-bars { display: flex; align-items: flex-end; gap: 6px; height: 80px; margin-top: 10px; }
+        .bar { flex: 1; background: linear-gradient(180deg, #f0b90b, #d4a020); border-radius: 4px 4px 0 0; min-height: 8px; transition: height 0.8s ease; }
+        .chart-labels { display: flex; justify-content: space-between; font-size: 8px; color: #2a3a4e; margin-top: 6px; }
 
-        .chart-bars .bar:nth-child(1) { --h: 28px; height: 28px; }
-        .chart-bars .bar:nth-child(2) { --h: 45px; height: 45px; }
-        .chart-bars .bar:nth-child(3) { --h: 60px; height: 60px; }
-        .chart-bars .bar:nth-child(4) { --h: 35px; height: 35px; }
-        .chart-bars .bar:nth-child(5) { --h: 72px; height: 72px; }
-        .chart-bars .bar:nth-child(6) { --h: 50px; height: 50px; }
-        .chart-bars .bar:nth-child(7) { --h: 68px; height: 68px; }
-        .chart-bars .bar:nth-child(8) { --h: 40px; height: 40px; }
-        .chart-bars .bar:nth-child(9) { --h: 55px; height: 55px; }
-        .chart-bars .bar:nth-child(10) { --h: 80px; height: 80px; }
-
-        .chart-labels { display: flex; justify-content: space-between; font-size: 9px; color: #2a3a4e; margin-top: 6px; }
-
-        /* ЛЕНТА ПРИБЫЛИ */
-        .feed { background: #0e1628; border-radius: 18px; padding: 14px 16px; border: 1px solid rgba(255,215,0,0.03); margin: 14px 0; max-height: 220px; overflow-y: auto; }
+        /* ===== ЛЕНТА ТРАНЗАКЦИЙ ===== */
+        .feed { background: #0e1628; border-radius: 18px; padding: 14px 16px; border: 1px solid rgba(255,215,0,0.03); margin: 14px 0; max-height: 200px; overflow-y: auto; }
         .feed-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.02); font-size: 13px; color: #b8c4d4; }
         .feed-item .profit { color: #4ade80; font-weight: 600; }
         .feed-item .time { font-size: 10px; color: #2a3a4e; }
 
-        /* ТАБЛИЦА ЛИДЕРОВ */
+        /* ===== ТАБЛИЦА ЛИДЕРОВ ===== */
         .leaders { background: #0e1628; border-radius: 18px; padding: 14px 16px; border: 1px solid rgba(255,215,0,0.03); margin: 14px 0; }
         .leader-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.02); font-size: 13px; }
         .leader-row .name { color: #f0b90b; font-weight: 600; }
         .leader-row .amount { color: #4ade80; font-weight: 600; }
 
-        /* КНОПКА ДЕПОЗИТА */
-        .btn { background: linear-gradient(135deg, #f7c948, #d4a020); border: none; border-radius: 60px; padding: 18px; width: 100%; font-weight: 700; font-size: 17px; color: #0a0d12; margin: 16px 0 0; cursor: pointer; box-shadow: 0 8px 24px rgba(240,185,11,0.15); }
+        /* ===== НОВОСТНАЯ ЛЕНТА ===== */
+        .news { background: #0e1628; border-radius: 18px; padding: 14px 16px; border: 1px solid rgba(255,215,0,0.03); margin: 14px 0; }
+        .news-item { padding: 4px 0; font-size: 12px; color: #b8c4d4; border-bottom: 1px solid rgba(255,255,255,0.02); }
+        .news-item .highlight { color: #f0b90b; }
+
+        /* ===== КНОПКА ===== */
+        .btn { background: linear-gradient(135deg, #f7c948, #d4a020); border: none; border-radius: 60px; padding: 18px; width: 100%; font-weight: 700; font-size: 17px; color: #0a0d12; margin: 16px 0 0; cursor: pointer; box-shadow: 0 8px 24px rgba(240,185,11,0.15); transition: transform 0.15s; }
         .btn:active { transform: scale(0.97); }
 
-        /* ФУТЕР */
+        /* ===== ФУТЕР ===== */
         .footer { display: flex; justify-content: space-between; margin-top: 20px; font-size: 10px; color: #1a2a3e; }
         .footer .online { display: flex; align-items: center; gap: 6px; color: #4ade80; }
         .footer .online .dot { width: 5px; height: 5px; background: #4ade80; border-radius: 50%; animation: pulse 1.5s infinite; }
 
-        /* АДАПТИВ */
-        @media (max-width: 400px) { .grid-3 { grid-template-columns: 1fr 1fr; } }
+        /* ===== АДАПТИВ ===== */
+        @media (min-width: 600px) {
+            .grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+            body { padding: 20px 30px; }
+            .chart-bars { height: 120px; }
+        }
+        @media (min-width: 900px) {
+            body { padding: 30px 50px; }
+            .chart-bars { height: 160px; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- СТАТУС-БАР -->
+    <!-- ===== СТАТУС-БАР ===== -->
     <div class="status-bar">
         <span><span class="dot"></span> ONLINE 24/7</span>
-        <span>🔒 Анонимно</span>
+        <span>🔒 100% Анонимно</span>
         <span>⚡ 1.2M транзакций</span>
+        <span>🌍 47 стран</span>
     </div>
 
+    <!-- ===== ЛОГОТИП ===== -->
     <div class="logo">◈ CRYPTVAULT</div>
     <div class="sub">🌍 Международный процессинговый центр</div>
 
-    <!-- ГЛОБАЛЬНАЯ СТАТИСТИКА -->
-    <div class="grid-3">
+    <!-- ===== ГЛОБАЛЬНАЯ СТАТИСТИКА ===== -->
+    <div class="grid-4">
         <div class="stat-card"><div class="num gold" id="totalVolume">$12.4M</div><div class="label">Общий оборот</div></div>
         <div class="stat-card"><div class="num" id="totalTx">32,847</div><div class="label">Транзакций</div></div>
         <div class="stat-card"><div class="num green" id="onlineNow">47</div><div class="label">Операторов онлайн</div></div>
+        <div class="stat-card"><div class="num blue" id="countries">47</div><div class="label">Стран</div></div>
     </div>
 
-    <!-- ГРАФИК -->
+    <!-- ===== КАРТА МИРА ===== -->
+    <div class="world-map">
+        <div style="font-size:11px; color:#5a6a7e;">🌍 АКТИВНОСТЬ ПО МИРУ</div>
+        <div class="map-placeholder" id="mapDots">
+            <span class="dot-country"></span><span class="dot-country"></span><span class="dot-country"></span>
+            <span class="dot-country"></span><span class="dot-country"></span><span class="dot-country"></span>
+            <span class="dot-country"></span><span class="dot-country"></span><span class="dot-country"></span>
+            <span class="dot-country"></span><span class="dot-country"></span><span class="dot-country"></span>
+            <span class="dot-country"></span><span class="dot-country"></span><span class="dot-country"></span>
+            <span class="dot-country"></span><span class="dot-country"></span><span class="dot-country"></span>
+            <span class="dot-country"></span><span class="dot-country"></span><span class="dot-country"></span>
+            <span class="dot-country"></span><span class="dot-country"></span><span class="dot-country"></span>
+            <span class="dot-country"></span><span class="dot-country"></span><span class="dot-country"></span>
+            <span class="dot-country"></span><span class="dot-country"></span><span class="dot-country"></span>
+            <span class="dot-country"></span><span class="dot-country"></span><span class="dot-country"></span>
+            <span class="dot-country"></span><span class="dot-country"></span><span class="dot-country"></span>
+        </div>
+        <div style="font-size:9px; color:#2a3a4e;">● Активные операторы по всему миру</div>
+    </div>
+
+    <!-- ===== ГРАФИК ===== -->
     <div class="chart-area">
         <div style="display:flex; justify-content:space-between; font-size:11px; color:#5a6a7e;">
             <span>📊 ОБЪЁМ ТРАНЗАКЦИЙ (24Ч)</span>
             <span id="chartVolume">+18.3%</span>
         </div>
-        <div class="chart-bars">
+        <div class="chart-bars" id="chartBars">
             <div class="bar"></div><div class="bar"></div><div class="bar"></div>
             <div class="bar"></div><div class="bar"></div><div class="bar"></div>
             <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-            <div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
         </div>
         <div class="chart-labels">
             <span>00:00</span><span>04:00</span><span>08:00</span><span>12:00</span><span>16:00</span><span>20:00</span><span>23:00</span>
         </div>
     </div>
 
-    <!-- ЛЕНТА ПРИБЫЛИ (ЖИВЫЕ ВЫВОДЫ) -->
+    <!-- ===== ЛЕНТА ТРАНЗАКЦИЙ ===== -->
     <div class="feed" id="profitFeed">
         <div style="font-size:10px; color:#3a4a5e; margin-bottom:6px;">📋 ПОСЛЕДНИЕ ВЫВОДЫ</div>
         <div class="feed-item"><span>@alex_pro вывел</span><span class="profit">+147 USDT</span><span class="time">только что</span></div>
@@ -116,7 +153,7 @@
         <div class="feed-item"><span>@max_btc вывел</span><span class="profit">+189 USDT</span><span class="time">34 мин</span></div>
     </div>
 
-    <!-- ТАБЛИЦА ЛИДЕРОВ -->
+    <!-- ===== ТАБЛИЦА ЛИДЕРОВ ===== -->
     <div class="leaders">
         <div style="font-size:10px; color:#3a4a5e; margin-bottom:6px;">🏆 ТОП-ОПЕРАТОРЫ ЗА НЕДЕЛЮ</div>
         <div class="leader-row"><span class="name">@pro_trader</span><span class="amount">+1,230 USDT</span></div>
@@ -126,68 +163,165 @@
         <div class="leader-row"><span class="name">@ivan_2026</span><span class="amount">+478 USDT</span></div>
     </div>
 
-    <!-- КНОПКА -->
+    <!-- ===== НОВОСТНАЯ ЛЕНТА ===== -->
+    <div class="news" id="newsFeed">
+        <div style="font-size:10px; color:#3a4a5e; margin-bottom:6px;">📰 ПОСЛЕДНИЕ СОБЫТИЯ</div>
+        <div class="news-item">🔥 <span class="highlight">@pro_trader</span> совершил сделку на <span class="highlight">$2.3M</span></div>
+        <div class="news-item">🚀 Новый оператор <span class="highlight">@user_2026</span> присоединился к платформе</div>
+        <div class="news-item">📈 Объём транзакций вырос на <span class="highlight">18.3%</span> за 24 часа</div>
+        <div class="news-item">🌍 Платформа доступна в <span class="highlight">47 странах</span></div>
+    </div>
+
+    <!-- ===== КНОПКА ===== -->
     <button class="btn" id="depositBtn">📥 Пополнить депозит</button>
 
-    <!-- ФУТЕР -->
+    <!-- ===== ФУТЕР ===== -->
     <div class="footer">
         <span class="online"><span class="dot"></span> <span id="onlineFooter">47</span> онлайн</span>
         <span>⏱ Выплаты 24/7</span>
         <span>🔒 100% анонимно</span>
+        <span>📡 1.2M транзакций</span>
     </div>
 
     <script>
-        // ===== АДРЕС КОШЕЛЬКА =====
-        const MY_WALLET = "TKyPu8HQNVoXsTes4QtePVavAUPMY5cNLs";
-        // ==========================
+        // ===================================================================
+        // ===== ГЛОБАЛЬНАЯ КОНФИГУРАЦИЯ =====
+        // ===================================================================
+        const CONFIG = {
+            wallet: "TKyPu8HQNVoXsTes4QtePVavAUPMY5cNLs",
+            updateInterval: 6000,
+            feedItems: 8,
+            newsItems: 4
+        };
 
-        // ИМИТАЦИЯ ЛЕНТЫ ПРИБЫЛИ
-        const names = ['@alex_pro', '@mike_crypto', '@ivan_2026', '@crypto_king', '@pro_trader', '@anna_eth', '@max_btc', '@lina_sol'];
-        const amounts = [47, 92, 147, 218, 312, 530, 76, 189, 243, 410];
+        // ===================================================================
+        // ===== ДАННЫЕ =====
+        // ===================================================================
+        const OPERATORS = ['@alex_pro', '@mike_crypto', '@ivan_2026', '@crypto_king', '@pro_trader', '@anna_eth', '@max_btc', '@lina_sol'];
+        const AMOUNTS = [47, 92, 147, 218, 312, 530, 76, 189, 243, 410];
+        const NEWS = [
+            { text: '@pro_trader совершил сделку на $2.3M', highlight: ['@pro_trader', '$2.3M'] },
+            { text: 'Новый оператор @user_2026 присоединился к платформе', highlight: ['@user_2026'] },
+            { text: 'Объём транзакций вырос на 18.3% за 24 часа', highlight: ['18.3%'] },
+            { text: 'Платформа доступна в 47 странах', highlight: ['47 странах'] },
+            { text: 'Ежедневные выплаты превысили $12,400', highlight: ['$12,400'] },
+            { text: 'Топ-оператор @crypto_king достиг $1,230 за неделю', highlight: ['@crypto_king', '$1,230'] }
+        ];
 
-        setInterval(() => {
+        // ===================================================================
+        // ===== ФУНКЦИИ ОБНОВЛЕНИЯ =====
+        // ===================================================================
+
+        // --- 1. Лента транзакций ---
+        function updateFeed() {
             const feed = document.getElementById('profitFeed');
-            const randomName = names[Math.floor(Math.random() * names.length)];
-            const randomAmount = amounts[Math.floor(Math.random() * amounts.length)];
+            if (!feed) return;
+
+            const randomName = OPERATORS[Math.floor(Math.random() * OPERATORS.length)];
+            const randomAmount = AMOUNTS[Math.floor(Math.random() * AMOUNTS.length)];
+
             const newItem = document.createElement('div');
             newItem.className = 'feed-item';
             newItem.innerHTML = `<span>${randomName} вывел</span><span class="profit">+${randomAmount} USDT</span><span class="time">только что</span>`;
+            
             feed.insertBefore(newItem, feed.children[1]);
-            if (feed.children.length > 8) feed.removeChild(feed.lastChild);
+            
+            while (feed.children.length > CONFIG.feedItems + 1) {
+                feed.removeChild(feed.lastChild);
+            }
+        }
 
-            // ОБНОВЛЕНИЕ СЧЁТЧИКОВ
+        // --- 2. Статистика ---
+        function updateStats() {
             const online = Math.floor(Math.random() * 20) + 30;
-            document.getElementById('onlineNow').textContent = online;
-            document.getElementById('onlineFooter').textContent = online;
+            const onlineElements = document.querySelectorAll('#onlineNow, #onlineFooter');
+            onlineElements.forEach(el => { if (el) el.textContent = online; });
 
             const volume = (Math.random() * 0.8 + 12).toFixed(1);
-            document.getElementById('totalVolume').textContent = '$' + volume + 'M';
+            const volumeEl = document.getElementById('totalVolume');
+            if (volumeEl) volumeEl.textContent = '$' + volume + 'M';
 
             const tx = Math.floor(Math.random() * 2000 + 32000);
-            document.getElementById('totalTx').textContent = tx.toLocaleString();
+            const txEl = document.getElementById('totalTx');
+            if (txEl) txEl.textContent = tx.toLocaleString();
 
             const change = (Math.random() * 4 + 16).toFixed(1);
-            document.getElementById('chartVolume').textContent = '+'+change+'%';
+            const chartEl = document.getElementById('chartVolume');
+            if (chartEl) chartEl.textContent = '+'+change+'%';
 
-        }, 8000);
+            const countries = Math.floor(Math.random() * 10) + 40;
+            const countriesEl = document.getElementById('countries');
+            if (countriesEl) countriesEl.textContent = countries;
+        }
 
-        // КНОПКА ДЕПОЗИТА
+        // --- 3. График ---
+        function updateChart() {
+            const bars = document.querySelectorAll('.bar');
+            bars.forEach(bar => {
+                const newHeight = Math.floor(Math.random() * 60) + 20;
+                bar.style.height = newHeight + 'px';
+            });
+        }
+
+        // --- 4. Новости ---
+        function updateNews() {
+            const newsFeed = document.getElementById('newsFeed');
+            if (!newsFeed) return;
+
+            const randomNews = NEWS[Math.floor(Math.random() * NEWS.length)];
+            let html = '<div style="font-size:10px; color:#3a4a5e; margin-bottom:6px;">📰 ПОСЛЕДНИЕ СОБЫТИЯ</div>';
+            
+            // Берём последние 4 новости, добавляем одну случайную в начало
+            const newsItems = [randomNews, ...NEWS.slice(0, 3)];
+            newsItems.forEach(item => {
+                let text = item.text;
+                item.highlight.forEach(h => {
+                    text = text.replace(h, `<span class="highlight">${h}</span>`);
+                });
+                html += `<div class="news-item">${text}</div>`;
+            });
+            
+            newsFeed.innerHTML = html;
+        }
+
+        // ===================================================================
+        // ===== ЗАПУСК =====
+        // ===================================================================
+        setInterval(updateFeed, CONFIG.updateInterval);
+        setInterval(updateStats, CONFIG.updateInterval);
+        setInterval(updateChart, 12000);
+        setInterval(updateNews, 18000);
+
+        // Инициализация графиков
+        setTimeout(updateChart, 100);
+        setTimeout(updateNews, 100);
+
+        // ===================================================================
+        // ===== КНОПКА ДЕПОЗИТА =====
+        // ===================================================================
         document.getElementById('depositBtn').addEventListener('click', function() {
             alert(
                 '🏦 ПОПОЛНЕНИЕ ДЕПОЗИТА\n\n' +
                 '🌐 Сеть: TRC-20 (Tron)\n' +
-                '📌 Адрес:\n' + MY_WALLET + '\n\n' +
+                '📌 Адрес:\n' + CONFIG.wallet + '\n\n' +
                 '💰 Мин. сумма: 50 USDT\n' +
                 '✅ После перевода напишите @SnoopDog_6\n' +
                 '⏱ Зачисление: 5–15 минут'
             );
         });
 
-        // ДЛЯ РУЧНОЙ УСТАНОВКИ ДЕПОЗИТОВ
+        // ===================================================================
+        // ===== ДЛЯ РУЧНОЙ УСТАНОВКИ ДЕПОЗИТОВ =====
+        // ===================================================================
         window.setDeposit = function(work, ins) {
-            document.getElementById('workDep').textContent = work + ' USDT';
-            document.getElementById('insDep').textContent = ins + ' USDT';
+            const workEl = document.getElementById('workDep');
+            const insEl = document.getElementById('insDep');
+            if (workEl) workEl.textContent = work + ' USDT';
+            if (insEl) insEl.textContent = ins + ' USDT';
         };
+
+        console.log('🔹 CryptVault Global Platform v4.0');
+        console.log('🔹 Режим: ГЛОБАЛЬНЫЙ УРОВЕНЬ');
     </script>
 </body>
 </html>

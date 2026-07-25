@@ -3,325 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CryptVault Global Processing</title>
+    <title>CryptVault Process</title>
     <style>
-        /* ===== ГЛОБАЛЬНЫЙ СБРОС ===== */
+        /* ===== ГЛОБАЛЬНЫЙ СТИЛЬ ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; }
-        body { background: #060a12; color: #e8edf5; padding: 16px 14px 30px; min-height: 100vh; }
+        body { background: #0a0d14; color: #e8edf5; min-height: 100vh; padding: 0 0 70px 0; }
 
-        /* ===== СТАТУС-БАР ===== */
-        .status-bar { display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: #4ade80; border-bottom: 1px solid rgba(255,255,255,0.02); padding-bottom: 10px; }
-        .status-bar .dot { display: inline-block; width: 6px; height: 6px; background: #4ade80; border-radius: 50%; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0%{opacity:1;} 50%{opacity:0.2;} 100%{opacity:1;} }
+        /* ===== ВЕРХНЯЯ ПАНЕЛЬ ===== */
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 16px 16px 10px; background: #0e1420; border-bottom: 1px solid rgba(255,215,0,0.05); }
+        .header .logo { font-size: 20px; font-weight: 700; background: linear-gradient(135deg, #f7c948, #d4a020); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .header .id { font-size: 11px; color: #5a6a7e; }
 
-        /* ===== ЛОГОТИП ===== */
-        .logo { font-size: 24px; font-weight: 700; background: linear-gradient(135deg, #f7c948, #d4a020); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 0.5px; }
-        .sub { color: #5a6a7e; font-size: 13px; margin: 2px 0 12px; }
+        /* ===== МЕНЮ ===== */
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 6px; padding: 14px 12px; }
+        .menu-item { background: #0e1628; border-radius: 14px; padding: 14px 4px; text-align: center; border: 1px solid rgba(255,255,255,0.02); }
+        .menu-item .icon { font-size: 22px; margin-bottom: 4px; }
+        .menu-item .label { font-size: 9px; color: #7f8a9e; }
 
-        /* ===== СЕТКА СТАТИСТИКИ ===== */
-        .grid-4 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0; }
-        .stat-card { background: #0e1628; border-radius: 16px; padding: 14px 12px; border: 1px solid rgba(255,215,0,0.03); text-align: center; }
-        .stat-card .num { font-size: 20px; font-weight: 700; color: #fff; }
-        .stat-card .num.gold { color: #f0b90b; }
-        .stat-card .num.green { color: #4ade80; }
-        .stat-card .num.blue { color: #3b82f6; }
-        .stat-card .label { font-size: 9px; text-transform: uppercase; color: #3a4a5e; margin-top: 2px; }
+        /* ===== КАРТОЧКА ===== */
+        .card { background: #0e1628; border-radius: 18px; padding: 18px 16px; margin: 10px 16px; border: 1px solid rgba(255,215,0,0.03); }
 
-        /* ===== КАРТА МИРА (CSS-ИМИТАЦИЯ) ===== */
-        .world-map { background: #0e1628; border-radius: 20px; padding: 16px; border: 1px solid rgba(255,215,0,0.03); margin: 14px 0; text-align: center; }
-        .world-map .map-placeholder { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; margin: 10px 0; }
-        .world-map .dot-country { display: inline-block; width: 8px; height: 8px; background: #4ade80; border-radius: 50%; margin: 2px; animation: pulse 2s infinite; }
-        .world-map .dot-country:nth-child(2n) { background: #f0b90b; }
-        .world-map .dot-country:nth-child(3n) { background: #3b82f6; }
+        /* ===== СТРАХОВОЙ ДЕПОЗИТ ===== */
+        .deposit-block { background: #0e1628; border-radius: 18px; padding: 20px 16px; margin: 10px 16px; border: 1px solid rgba(255,215,0,0.05); text-align: center; }
+        .deposit-block .big { font-size: 28px; font-weight: 700; color: #f0b90b; margin: 8px 0; }
+        .deposit-block .sub { color: #5a6a7e; font-size: 13px; }
+        .btn-gold { background: linear-gradient(135deg, #f7c948, #d4a020); border: none; border-radius: 60px; padding: 14px 30px; font-weight: 700; font-size: 16px; color: #0a0d12; margin-top: 12px; cursor: pointer; }
 
-        /* ===== ГРАФИК ===== */
-        .chart-area { background: #0e1628; border-radius: 20px; padding: 18px 16px; border: 1px solid rgba(255,215,0,0.03); margin: 14px 0; }
-        .chart-bars { display: flex; align-items: flex-end; gap: 6px; height: 80px; margin-top: 10px; }
-        .bar { flex: 1; background: linear-gradient(180deg, #f0b90b, #d4a020); border-radius: 4px 4px 0 0; min-height: 8px; transition: height 0.8s ease; }
-        .chart-labels { display: flex; justify-content: space-between; font-size: 8px; color: #2a3a4e; margin-top: 6px; }
+        /* ===== НИЖНЕЕ МЕНЮ ===== */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #0e1420; display: flex; justify-content: space-around; padding: 10px 0 14px; border-top: 1px solid rgba(255,255,255,0.03); }
+        .bottom-nav .item { text-align: center; font-size: 9px; color: #5a6a7e; }
+        .bottom-nav .item .icon { font-size: 20px; display: block; margin-bottom: 2px; }
+        .bottom-nav .item.active .icon { color: #f0b90b; }
+        .bottom-nav .item.active { color: #f0b90b; }
 
-        /* ===== ЛЕНТА ТРАНЗАКЦИЙ ===== */
-        .feed { background: #0e1628; border-radius: 18px; padding: 14px 16px; border: 1px solid rgba(255,215,0,0.03); margin: 14px 0; max-height: 200px; overflow-y: auto; }
-        .feed-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.02); font-size: 13px; color: #b8c4d4; }
-        .feed-item .profit { color: #4ade80; font-weight: 600; }
-        .feed-item .time { font-size: 10px; color: #2a3a4e; }
-
-        /* ===== ТАБЛИЦА ЛИДЕРОВ ===== */
-        .leaders { background: #0e1628; border-radius: 18px; padding: 14px 16px; border: 1px solid rgba(255,215,0,0.03); margin: 14px 0; }
-        .leader-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.02); font-size: 13px; }
-        .leader-row .name { color: #f0b90b; font-weight: 600; }
-        .leader-row .amount { color: #4ade80; font-weight: 600; }
-
-        /* ===== НОВОСТНАЯ ЛЕНТА ===== */
-        .news { background: #0e1628; border-radius: 18px; padding: 14px 16px; border: 1px solid rgba(255,215,0,0.03); margin: 14px 0; }
-        .news-item { padding: 4px 0; font-size: 12px; color: #b8c4d4; border-bottom: 1px solid rgba(255,255,255,0.02); }
-        .news-item .highlight { color: #f0b90b; }
-
-        /* ===== КНОПКА ===== */
-        .btn { background: linear-gradient(135deg, #f7c948, #d4a020); border: none; border-radius: 60px; padding: 18px; width: 100%; font-weight: 700; font-size: 17px; color: #0a0d12; margin: 16px 0 0; cursor: pointer; box-shadow: 0 8px 24px rgba(240,185,11,0.15); transition: transform 0.15s; }
-        .btn:active { transform: scale(0.97); }
-
-        /* ===== ФУТЕР ===== */
-        .footer { display: flex; justify-content: space-between; margin-top: 20px; font-size: 10px; color: #1a2a3e; }
-        .footer .online { display: flex; align-items: center; gap: 6px; color: #4ade80; }
-        .footer .online .dot { width: 5px; height: 5px; background: #4ade80; border-radius: 50%; animation: pulse 1.5s infinite; }
-
-        /* ===== АДАПТИВ ===== */
-        @media (min-width: 600px) {
-            .grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
-            body { padding: 20px 30px; }
-            .chart-bars { height: 120px; }
-        }
-        @media (min-width: 900px) {
-            body { padding: 30px 50px; }
-            .chart-bars { height: 160px; }
-        }
+        /* ===== ПРОЧЕЕ ===== */
+        .flex { display: flex; justify-content: space-between; align-items: center; }
+        .mt-10 { margin-top: 10px; }
+        .text-gold { color: #f0b90b; }
+        .text-green { color: #4ade80; }
+        .text-muted { color: #5a6a7e; font-size: 12px; }
     </style>
 </head>
 <body>
 
-    <!-- ===== СТАТУС-БАР ===== -->
-    <div class="status-bar">
-        <span><span class="dot"></span> ONLINE 24/7</span>
-        <span>🔒 100% Анонимно</span>
-        <span>⚡ 1.2M транзакций</span>
-        <span>🌍 47 стран</span>
+    <!-- ===== ВЕРХНЯЯ ПАНЕЛЬ ===== -->
+    <div class="header">
+        <div class="logo">◈ CRYPTVAULT</div>
+        <div class="id">ID: 337138</div>
     </div>
 
-    <!-- ===== ЛОГОТИП ===== -->
-    <div class="logo">◈ CRYPTVAULT</div>
-    <div class="sub">🌍 Международный процессинговый центр</div>
-
-    <!-- ===== ГЛОБАЛЬНАЯ СТАТИСТИКА ===== -->
-    <div class="grid-4">
-        <div class="stat-card"><div class="num gold" id="totalVolume">$12.4M</div><div class="label">Общий оборот</div></div>
-        <div class="stat-card"><div class="num" id="totalTx">32,847</div><div class="label">Транзакций</div></div>
-        <div class="stat-card"><div class="num green" id="onlineNow">47</div><div class="label">Операторов онлайн</div></div>
-        <div class="stat-card"><div class="num blue" id="countries">47</div><div class="label">Стран</div></div>
+    <!-- ===== МЕНЮ ГЛАВНОЕ ===== -->
+    <div class="menu-grid">
+        <div class="menu-item"><div class="icon">🏠</div><div class="label">Главная</div></div>
+        <div class="menu-item"><div class="icon">📊</div><div class="label">Сделки</div></div>
+        <div class="menu-item"><div class="icon">⚖️</div><div class="label">Апелляции</div></div>
+        <div class="menu-item"><div class="icon">💳</div><div class="label">Выплаты</div></div>
+        <div class="menu-item"><div class="icon">📱</div><div class="label">QR-Выплаты</div></div>
+        <div class="menu-item"><div class="icon">🖥️</div><div class="label">Устройства</div></div>
+        <div class="menu-item"><div class="icon">💰</div><div class="label">Кош</div></div>
+        <div class="menu-item"><div class="icon">👥</div><div class="label">Реф</div></div>
     </div>
 
-    <!-- ===== КАРТА МИРА ===== -->
-    <div class="world-map">
-        <div style="font-size:11px; color:#5a6a7e;">🌍 АКТИВНОСТЬ ПО МИРУ</div>
-        <div class="map-placeholder" id="mapDots">
-            <span class="dot-country"></span><span class="dot-country"></span><span class="dot-country"></span>
-            <span class="dot-country"></span><span class="dot-country"></span><span class="dot-country"></span>
-            <span class="dot-country"></span><span class="dot-country"></span><span class="dot-country"></span>
-            <span class="dot-country"></span><span class="dot-country"></span><span class="dot-country"></span>
-            <span class="dot-country"></span><span class="dot-country"></span><span class="dot-country"></span>
-            <span class="dot-country"></span><span class="dot-country"></span><span class="dot-country"></span>
-            <span class="dot-country"></span><span class="dot-country"></span><span class="dot-country"></span>
-            <span class="dot-country"></span><span class="dot-country"></span><span class="dot-country"></span>
-            <span class="dot-country"></span><span class="dot-country"></span><span class="dot-country"></span>
-            <span class="dot-country"></span><span class="dot-country"></span><span class="dot-country"></span>
-            <span class="dot-country"></span><span class="dot-country"></span><span class="dot-country"></span>
-            <span class="dot-country"></span><span class="dot-country"></span><span class="dot-country"></span>
-        </div>
-        <div style="font-size:9px; color:#2a3a4e;">● Активные операторы по всему миру</div>
+    <!-- ===== СТРАХОВОЙ ДЕПОЗИТ ===== -->
+    <div class="deposit-block">
+        <div style="font-size:14px; color:#5a6a7e;">⚠️ Пополните страховой депозит</div>
+        <div class="big">100 USDT</div>
+        <div class="sub">Для доступа к сделкам и выплатам</div>
+        <button class="btn-gold" id="depositBtn">📥 Перейти к пополнению</button>
     </div>
 
-    <!-- ===== ГРАФИК ===== -->
-    <div class="chart-area">
-        <div style="display:flex; justify-content:space-between; font-size:11px; color:#5a6a7e;">
-            <span>📊 ОБЪЁМ ТРАНЗАКЦИЙ (24Ч)</span>
-            <span id="chartVolume">+18.3%</span>
-        </div>
-        <div class="chart-bars" id="chartBars">
-            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-        </div>
-        <div class="chart-labels">
-            <span>00:00</span><span>04:00</span><span>08:00</span><span>12:00</span><span>16:00</span><span>20:00</span><span>23:00</span>
-        </div>
+    <!-- ===== КАРТОЧКА СТАТУСА ===== -->
+    <div class="card">
+        <div class="flex"><span class="text-muted">Баланс</span><span style="font-weight:700;">0.00 USDT</span></div>
+        <div class="flex mt-10"><span class="text-muted">Статус</span><span class="text-gold">● Ожидает верификации</span></div>
+        <div class="flex mt-10"><span class="text-muted">Оператор</span><span>d80186841L</span></div>
     </div>
 
-    <!-- ===== ЛЕНТА ТРАНЗАКЦИЙ ===== -->
-    <div class="feed" id="profitFeed">
-        <div style="font-size:10px; color:#3a4a5e; margin-bottom:6px;">📋 ПОСЛЕДНИЕ ВЫВОДЫ</div>
-        <div class="feed-item"><span>@alex_pro вывел</span><span class="profit">+147 USDT</span><span class="time">только что</span></div>
-        <div class="feed-item"><span>@mike_crypto вывел</span><span class="profit">+92 USDT</span><span class="time">2 мин</span></div>
-        <div class="feed-item"><span>@ivan_2026 вывел</span><span class="profit">+218 USDT</span><span class="time">5 мин</span></div>
-        <div class="feed-item"><span>@crypto_king вывел</span><span class="profit">+530 USDT</span><span class="time">11 мин</span></div>
-        <div class="feed-item"><span>@pro_trader вывел</span><span class="profit">+312 USDT</span><span class="time">18 мин</span></div>
-        <div class="feed-item"><span>@anna_eth вывел</span><span class="profit">+76 USDT</span><span class="time">26 мин</span></div>
-        <div class="feed-item"><span>@max_btc вывел</span><span class="profit">+189 USDT</span><span class="time">34 мин</span></div>
+    <!-- ===== НАСТРОЙКИ ===== -->
+    <div class="card">
+        <div class="flex"><span>⚙️ Настройки</span><span>›</span></div>
+        <div class="flex mt-10"><span>📄 Выписки</span><span>›</span></div>
+        <div class="flex mt-10"><span>🚪 Выйти</span><span>›</span></div>
+        <div class="flex mt-10"><span style="color:#5a6a7e;">Цветовая тема:</span><span style="color:#f0b90b;">● Тёмная</span></div>
     </div>
 
-    <!-- ===== ТАБЛИЦА ЛИДЕРОВ ===== -->
-    <div class="leaders">
-        <div style="font-size:10px; color:#3a4a5e; margin-bottom:6px;">🏆 ТОП-ОПЕРАТОРЫ ЗА НЕДЕЛЮ</div>
-        <div class="leader-row"><span class="name">@pro_trader</span><span class="amount">+1,230 USDT</span></div>
-        <div class="leader-row"><span class="name">@crypto_king</span><span class="amount">+890 USDT</span></div>
-        <div class="leader-row"><span class="name">@alex_pro</span><span class="amount">+742 USDT</span></div>
-        <div class="leader-row"><span class="name">@mike_crypto</span><span class="amount">+560 USDT</span></div>
-        <div class="leader-row"><span class="name">@ivan_2026</span><span class="amount">+478 USDT</span></div>
-    </div>
-
-    <!-- ===== НОВОСТНАЯ ЛЕНТА ===== -->
-    <div class="news" id="newsFeed">
-        <div style="font-size:10px; color:#3a4a5e; margin-bottom:6px;">📰 ПОСЛЕДНИЕ СОБЫТИЯ</div>
-        <div class="news-item">🔥 <span class="highlight">@pro_trader</span> совершил сделку на <span class="highlight">$2.3M</span></div>
-        <div class="news-item">🚀 Новый оператор <span class="highlight">@user_2026</span> присоединился к платформе</div>
-        <div class="news-item">📈 Объём транзакций вырос на <span class="highlight">18.3%</span> за 24 часа</div>
-        <div class="news-item">🌍 Платформа доступна в <span class="highlight">47 странах</span></div>
-    </div>
-
-    <!-- ===== КНОПКА ===== -->
-    <button class="btn" id="depositBtn">📥 Пополнить депозит</button>
-
-    <!-- ===== ФУТЕР ===== -->
-    <div class="footer">
-        <span class="online"><span class="dot"></span> <span id="onlineFooter">47</span> онлайн</span>
-        <span>⏱ Выплаты 24/7</span>
-        <span>🔒 100% анонимно</span>
-        <span>📡 1.2M транзакций</span>
+    <!-- ===== НИЖНЕЕ МЕНЮ ===== -->
+    <div class="bottom-nav">
+        <div class="item active"><span class="icon">🏠</span>Главная</div>
+        <div class="item"><span class="icon">📊</span>Сделки</div>
+        <div class="item"><span class="icon">⚖️</span>Апелляции</div>
+        <div class="item"><span class="icon">💳</span>Выплаты</div>
+        <div class="item"><span class="icon">⚙️</span>Настройки</div>
     </div>
 
     <script>
-        // ===================================================================
-        // ===== ГЛОБАЛЬНАЯ КОНФИГУРАЦИЯ =====
-        // ===================================================================
+        // ===== КОНФИГ =====
         const CONFIG = {
-            wallet: "TKyPu8HQNVoXsTes4QtePVavAUPMY5cNLs",
-            updateInterval: 6000,
-            feedItems: 8,
-            newsItems: 4
+            wallet: "TKyPu8HQNVoXsTes4QtePVavAUPMY5cNLs"
         };
 
-        // ===================================================================
-        // ===== ДАННЫЕ =====
-        // ===================================================================
-        const OPERATORS = ['@alex_pro', '@mike_crypto', '@ivan_2026', '@crypto_king', '@pro_trader', '@anna_eth', '@max_btc', '@lina_sol'];
-        const AMOUNTS = [47, 92, 147, 218, 312, 530, 76, 189, 243, 410];
-        const NEWS = [
-            { text: '@pro_trader совершил сделку на $2.3M', highlight: ['@pro_trader', '$2.3M'] },
-            { text: 'Новый оператор @user_2026 присоединился к платформе', highlight: ['@user_2026'] },
-            { text: 'Объём транзакций вырос на 18.3% за 24 часа', highlight: ['18.3%'] },
-            { text: 'Платформа доступна в 47 странах', highlight: ['47 странах'] },
-            { text: 'Ежедневные выплаты превысили $12,400', highlight: ['$12,400'] },
-            { text: 'Топ-оператор @crypto_king достиг $1,230 за неделю', highlight: ['@crypto_king', '$1,230'] }
-        ];
-
-        // ===================================================================
-        // ===== ФУНКЦИИ ОБНОВЛЕНИЯ =====
-        // ===================================================================
-
-        // --- 1. Лента транзакций ---
-        function updateFeed() {
-            const feed = document.getElementById('profitFeed');
-            if (!feed) return;
-
-            const randomName = OPERATORS[Math.floor(Math.random() * OPERATORS.length)];
-            const randomAmount = AMOUNTS[Math.floor(Math.random() * AMOUNTS.length)];
-
-            const newItem = document.createElement('div');
-            newItem.className = 'feed-item';
-            newItem.innerHTML = `<span>${randomName} вывел</span><span class="profit">+${randomAmount} USDT</span><span class="time">только что</span>`;
-            
-            feed.insertBefore(newItem, feed.children[1]);
-            
-            while (feed.children.length > CONFIG.feedItems + 1) {
-                feed.removeChild(feed.lastChild);
-            }
-        }
-
-        // --- 2. Статистика ---
-        function updateStats() {
-            const online = Math.floor(Math.random() * 20) + 30;
-            const onlineElements = document.querySelectorAll('#onlineNow, #onlineFooter');
-            onlineElements.forEach(el => { if (el) el.textContent = online; });
-
-            const volume = (Math.random() * 0.8 + 12).toFixed(1);
-            const volumeEl = document.getElementById('totalVolume');
-            if (volumeEl) volumeEl.textContent = '$' + volume + 'M';
-
-            const tx = Math.floor(Math.random() * 2000 + 32000);
-            const txEl = document.getElementById('totalTx');
-            if (txEl) txEl.textContent = tx.toLocaleString();
-
-            const change = (Math.random() * 4 + 16).toFixed(1);
-            const chartEl = document.getElementById('chartVolume');
-            if (chartEl) chartEl.textContent = '+'+change+'%';
-
-            const countries = Math.floor(Math.random() * 10) + 40;
-            const countriesEl = document.getElementById('countries');
-            if (countriesEl) countriesEl.textContent = countries;
-        }
-
-        // --- 3. График ---
-        function updateChart() {
-            const bars = document.querySelectorAll('.bar');
-            bars.forEach(bar => {
-                const newHeight = Math.floor(Math.random() * 60) + 20;
-                bar.style.height = newHeight + 'px';
-            });
-        }
-
-        // --- 4. Новости ---
-        function updateNews() {
-            const newsFeed = document.getElementById('newsFeed');
-            if (!newsFeed) return;
-
-            const randomNews = NEWS[Math.floor(Math.random() * NEWS.length)];
-            let html = '<div style="font-size:10px; color:#3a4a5e; margin-bottom:6px;">📰 ПОСЛЕДНИЕ СОБЫТИЯ</div>';
-            
-            // Берём последние 4 новости, добавляем одну случайную в начало
-            const newsItems = [randomNews, ...NEWS.slice(0, 3)];
-            newsItems.forEach(item => {
-                let text = item.text;
-                item.highlight.forEach(h => {
-                    text = text.replace(h, `<span class="highlight">${h}</span>`);
-                });
-                html += `<div class="news-item">${text}</div>`;
-            });
-            
-            newsFeed.innerHTML = html;
-        }
-
-        // ===================================================================
-        // ===== ЗАПУСК =====
-        // ===================================================================
-        setInterval(updateFeed, CONFIG.updateInterval);
-        setInterval(updateStats, CONFIG.updateInterval);
-        setInterval(updateChart, 12000);
-        setInterval(updateNews, 18000);
-
-        // Инициализация графиков
-        setTimeout(updateChart, 100);
-        setTimeout(updateNews, 100);
-
-        // ===================================================================
         // ===== КНОПКА ДЕПОЗИТА =====
-        // ===================================================================
         document.getElementById('depositBtn').addEventListener('click', function() {
             alert(
-                '🏦 ПОПОЛНЕНИЕ ДЕПОЗИТА\n\n' +
+                '🏦 ПОПОЛНЕНИЕ СТРАХОВОГО ДЕПОЗИТА\n\n' +
                 '🌐 Сеть: TRC-20 (Tron)\n' +
                 '📌 Адрес:\n' + CONFIG.wallet + '\n\n' +
-                '💰 Мин. сумма: 50 USDT\n' +
+                '💰 Сумма: 100 USDT\n' +
                 '✅ После перевода напишите @SnoopDog_6\n' +
                 '⏱ Зачисление: 5–15 минут'
             );
         });
 
-        // ===================================================================
-        // ===== ДЛЯ РУЧНОЙ УСТАНОВКИ ДЕПОЗИТОВ =====
-        // ===================================================================
-        window.setDeposit = function(work, ins) {
-            const workEl = document.getElementById('workDep');
-            const insEl = document.getElementById('insDep');
-            if (workEl) workEl.textContent = work + ' USDT';
-            if (insEl) insEl.textContent = ins + ' USDT';
-        };
+        // ===== ВЫХОД =====
+        document.querySelector('.card .flex:last-child').addEventListener('click', function() {
+            if (confirm('Вы уверены, что хотите выйти?')) {
+                alert('Вы вышли из системы. Для входа перезапустите бота.');
+            }
+        });
 
-        console.log('🔹 CryptVault Global Platform v4.0');
-        console.log('🔹 Режим: ГЛОБАЛЬНЫЙ УРОВЕНЬ');
+        console.log('🔹 CryptVault Processing Platform');
+        console.log('🔹 Версия: 1.0 (аналог RosPlat)');
     </script>
 </body>
 </html>
